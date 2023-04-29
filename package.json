@@ -7,7 +7,7 @@
         "type": "git",
         "url": "https://github.com/kadoshita/react-select-media-devices-modal.git"
     },
-    "homepage": "https://github.com/kadoshita/react-select-media-devices-modal",
+    "homepage": "https://kadoshita.github.io/react-select-media-devices-modal/",
     "bugs": "https://github.com/kadoshita/react-select-media-devices-modal/issues",
     "main": "./dist/react-select-media-devices-modal.umd.js",
     "module": "./dist/react-select-media-devices-modal.mjs",
