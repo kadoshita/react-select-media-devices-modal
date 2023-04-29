@@ -1,5 +1,9 @@
 # react-select-media-devices-modal
 
+[![npm version](https://badge.fury.io/js/react-select-media-devices-modal.svg)](https://badge.fury.io/js/react-select-media-devices-modal)
+[![Release](https://github.com/kadoshita/react-select-media-devices-modal/actions/workflows/release.yaml/badge.svg)](https://github.com/kadoshita/react-select-media-devices-modal/actions/workflows/release.yaml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A React component library for select media devices.
 
 ## Features
