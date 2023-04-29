@@ -3,10 +3,11 @@ import { SelectMediaDevicesModal } from 'react-select-media-devices-modal';
 
 function App() {
     const [modalOpen, setModalOpen] = useState(false);
+    const [devices, setDevices] = useState();
 
     const handleDeviceSelected = (devices) => {
         setModalOpen(false);
-        console.log(devices);
+        setDevices(devices);
     };
 
     const handleDeviceSelectCanceled = () => {
@@ -16,6 +17,7 @@ function App() {
     return (
         <>
             <button onClick={() => setModalOpen((current) => !current)}>Select Device</button>
+            <pre>{JSON.stringify(devices, null, 2)}</pre>
             <SelectMediaDevicesModal
                 isSelectAudioInput
                 isSelectAudioOutput
