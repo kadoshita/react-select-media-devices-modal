@@ -12,7 +12,7 @@ interface SelectMediaDevicesModalProps {
     audioInputDeviceLabel: string;
     audioOutputDeviceLabel: string;
     videoInputDeviceLabel: string;
-    OkButtonText: string;
+    ConfirmButtonText: string;
     CancelButtonText: string;
     allowOutsideClick: boolean;
     onDeviceSelected: (devices: {
@@ -32,7 +32,7 @@ const SelectMediaDevicesModal = ({
     audioInputDeviceLabel = 'audio input device',
     audioOutputDeviceLabel = 'audio output device',
     videoInputDeviceLabel = 'video input device',
-    OkButtonText = 'OK',
+    ConfirmButtonText = 'Confirm',
     CancelButtonText = 'Cancel',
     allowOutsideClick = true,
     onDeviceSelected,
@@ -51,7 +51,7 @@ const SelectMediaDevicesModal = ({
         getDevices();
     }, []);
 
-    const handleOkClick = () => {
+    const handleConfirmClick = () => {
         onDeviceSelected({
             audioInput: audioInputDevice !== undefined ? audioInputDevice : audioInputDevices[0],
             audioOutput: audioOutputDevice !== undefined ? audioOutputDevice : audioOutputDevices[0],
@@ -116,8 +116,8 @@ const SelectMediaDevicesModal = ({
                     <Button className={s.cancelButton} onClick={handleCancelClick}>
                         {CancelButtonText}
                     </Button>
-                    <Button className={s.okButton} onClick={handleOkClick}>
-                        {OkButtonText}
+                    <Button className={s.confirmButton} onClick={handleConfirmClick}>
+                        {ConfirmButtonText}
                     </Button>
                 </div>
             </div>
