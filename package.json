@@ -3,6 +3,12 @@
     "description": "A React component library for select media devices",
     "version": "0.0.3",
     "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/kadoshita/react-select-media-devices-modal.git"
+    },
+    "homepage": "https://github.com/kadoshita/react-select-media-devices-modal",
+    "bugs": "https://github.com/kadoshita/react-select-media-devices-modal/issues",
     "main": "./dist/react-select-media-devices-modal.umd.js",
     "module": "./dist/react-select-media-devices-modal.mjs",
     "types": "./dist/types/index.d.ts",
