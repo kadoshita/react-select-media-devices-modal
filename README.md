@@ -6,6 +6,10 @@ A React component library for select media devices.
 
 - Select audio input, audio output, and video input device.
 
+## Demo
+
+[https://kadoshita.github.io/react-select-media-devices-modal/example/](https://kadoshita.github.io/react-select-media-devices-modal/example/)
+
 ## Installation
 
 ```shell
