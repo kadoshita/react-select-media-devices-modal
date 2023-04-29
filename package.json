@@ -2,6 +2,7 @@
     "name": "react-select-media-devices-modal",
     "description": "A React component library for select media devices",
     "version": "0.0.2",
+    "license": "MIT",
     "main": "./dist/react-select-media-devices-modal.umd.js",
     "module": "./dist/react-select-media-devices-modal.mjs",
     "types": "./dist/types/index.d.ts",
@@ -14,6 +15,14 @@
     },
     "files": [
         "dist"
+    ],
+    "keywords": [
+        "react",
+        "modal",
+        "compoennt",
+        "mediadevices",
+        "getusermedia",
+        "enumeratedevices"
     ],
     "scripts": {
         "dev": "vite serve example",
