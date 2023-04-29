@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ES2019",
+    "baseUrl": ".",
+    "jsx": "react",
+    "moduleResolution": "Node",
+    "lib": [
+      "ES2015"
+    ],
+    "paths": {
+      "react-select-media-devices-modal": [
+        "./src"
+      ]
+    },
+    "esModuleInterop": true
+  }
+}

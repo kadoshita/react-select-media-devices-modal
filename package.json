@@ -1,0 +1,39 @@
+{
+    "name": "react-select-media-devices-modal",
+    "description": "A React component library for select media devices",
+    "version": "0.0.1",
+    "main": "./dist/react-select-media-devices-modal.umd.js",
+    "module": "./dist/react-select-media-devices-modal.mjs",
+    "types": "./dist/types/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/react-select-media-devices-modal.mjs",
+            "require": "./dist/react-select-media-devices-modal.umd.js"
+        },
+        "./dist/style.css": "./dist/style.css"
+    },
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "dev": "vite serve example",
+        "build": "vite build"
+    },
+    "dependencies": {
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-router-dom": "^6.10.0"
+    },
+    "devDependencies": {
+        "@mdx-js/react": "^2.3.0",
+        "@rollup/plugin-typescript": "^11.1.0",
+        "@types/node": "^18.15.11",
+        "@types/react": "^18.0.33",
+        "@vitejs/plugin-react": "^3.1.0",
+        "rimraf": "^4.4.1",
+        "serve": "^14.2.0",
+        "vite": "^4.2.1",
+        "vite-pages-theme-doc": "^4.0.0",
+        "vite-plugin-react-pages": "^4.0.0"
+    }
+}
