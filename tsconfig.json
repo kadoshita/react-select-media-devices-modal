@@ -5,7 +5,8 @@
     "jsx": "react",
     "moduleResolution": "Node",
     "lib": [
-      "ES2015"
+      "ES2015",
+      "DOM"
     ],
     "paths": {
       "react-select-media-devices-modal": [
