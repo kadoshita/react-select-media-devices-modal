@@ -75,7 +75,7 @@ export default App;
 
 ## LICENSE
 
-[MIT](./LICENSE)
+[MIT](https://github.com/kadoshita/react-select-media-devices-modal/blob/master/LICENSE)
 
 ## Author
 
