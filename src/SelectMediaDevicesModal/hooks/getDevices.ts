@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 export const useGetDevices = (): [MediaDeviceInfo[], () => void] => {
-    const [devices, setDevices] = useState<MediaDeviceInfo[]>();
+    const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
 
     const getDevices = () => {
         (async () => {

@@ -4,15 +4,26 @@ import { SelectMediaDevicesModal } from 'react-select-media-devices-modal';
 function App() {
     const [modalOpen, setModalOpen] = useState(false);
 
-    const handleDeviceSelected = (device) => {
+    const handleDeviceSelected = (devices) => {
         setModalOpen(false);
-        console.log(device);
+        console.log(devices);
+    };
+
+    const handleDeviceSelectCanceled = () => {
+        setModalOpen(false);
     };
 
     return (
         <>
             <button onClick={() => setModalOpen((current) => !current)}>Select Device</button>
-            <SelectMediaDevicesModal open={modalOpen} onDeviceSelected={handleDeviceSelected}></SelectMediaDevicesModal>
+            <SelectMediaDevicesModal
+                isSelectAudioInput
+                isSelectAudioOutput
+                isSelectVideoInput
+                open={modalOpen}
+                onDeviceSelected={handleDeviceSelected}
+                onDeviceSelectCanceled={handleDeviceSelectCanceled}
+            ></SelectMediaDevicesModal>
         </>
     );
 }
