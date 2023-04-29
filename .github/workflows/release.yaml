@@ -1,0 +1,65 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  verup:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - name: Get version
+      id: get_version
+      run: echo "version=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
+    - uses: actions/checkout@v3
+      with:
+        ref: master
+        fetch-depth: 0
+    - name: Update package version
+      run: |
+        npm version from-git --no-git-tag-version
+    - name: Commit and push
+      run: |
+        git config user.name 'github-actions[bot]'
+        git config user.email 'github-actions[bot]@users.noreply.github.com'
+        git add .
+        git commit -m "Update version to ${{ steps.get_version.outputs.version }}"
+        git push -u origin master
+
+  build-and-release-package:
+    runs-on: ubuntu-latest
+    needs:
+      - verup
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          ref: master
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm ci
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  release:
+    runs-on: ubuntu-latest
+    needs:
+      - verup
+    permissions:
+      contents: write
+    steps:
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        generate_release_notes: true
