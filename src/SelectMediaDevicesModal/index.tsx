@@ -2,12 +2,19 @@ import React, { useEffect, useState } from 'react';
 import s from './style.module.css';
 import { useGetDevices } from './hooks/getDevices';
 import DeviceList from './components/deviceList';
+import Button from './components/button';
 
 interface SelectMediaDevicesModalProps {
     isSelectAudioInput: boolean;
     isSelectAudioOutput: boolean;
     isSelectVideoInput: boolean;
     open: boolean;
+    audioInputDeviceLabel: string;
+    audioOutputDeviceLabel: string;
+    videoInputDeviceLabel: string;
+    OkButtonText: string;
+    CancelButtonText: string;
+    allowOutsideClick: boolean;
     onDeviceSelected: (devices: {
         audioInput?: MediaDeviceInfo;
         audioOutput?: MediaDeviceInfo;
@@ -18,10 +25,16 @@ interface SelectMediaDevicesModalProps {
 }
 
 const SelectMediaDevicesModal = ({
-    isSelectAudioInput,
-    isSelectAudioOutput,
-    isSelectVideoInput,
+    isSelectAudioInput = true,
+    isSelectAudioOutput = true,
+    isSelectVideoInput = true,
     open,
+    audioInputDeviceLabel = 'audio input device',
+    audioOutputDeviceLabel = 'audio output device',
+    videoInputDeviceLabel = 'video input device',
+    OkButtonText = 'OK',
+    CancelButtonText = 'Cancel',
+    allowOutsideClick = true,
     onDeviceSelected,
     onDeviceSelectCanceled,
 }: SelectMediaDevicesModalProps) => {
@@ -38,7 +51,7 @@ const SelectMediaDevicesModal = ({
         getDevices();
     }, []);
 
-    const handleOKClick = () => {
+    const handleOkClick = () => {
         onDeviceSelected({
             audioInput: audioInputDevice !== undefined ? audioInputDevice : audioInputDevices[0],
             audioOutput: audioOutputDevice !== undefined ? audioOutputDevice : audioOutputDevices[0],
@@ -62,35 +75,50 @@ const SelectMediaDevicesModal = ({
         setVideoInputDevice(videoInputDevices.find((d) => d.deviceId === deviceId));
     };
 
+    const handleOutsideClick = () => {
+        onDeviceSelectCanceled();
+    };
+
     return open ? (
-        <div className={s.background}>
-            <div className={s.modal}>
+        <div className={s.background} {...(allowOutsideClick ? { onClick: handleOutsideClick } : {})}>
+            <div
+                className={s.modal}
+                {...(allowOutsideClick
+                    ? {
+                          onClick: (e: React.MouseEvent<HTMLInputElement>) => e.stopPropagation(),
+                      }
+                    : {})}
+            >
                 <div className={s.deviceLists}>
                     {isSelectAudioInput && (
                         <DeviceList
-                            label="audio input device"
+                            label={audioInputDeviceLabel}
                             devices={audioInputDevices}
                             onChange={handleChangeAudioInputDevice}
                         ></DeviceList>
                     )}
                     {isSelectAudioOutput && (
                         <DeviceList
-                            label="audio output device"
+                            label={audioOutputDeviceLabel}
                             devices={audioOutputDevices}
                             onChange={handleChangeAudioOutputDevice}
                         ></DeviceList>
                     )}
                     {isSelectVideoInput && (
                         <DeviceList
-                            label="video input device"
+                            label={videoInputDeviceLabel}
                             devices={videoInputDevices}
                             onChange={handleChangeVideoInputDevice}
                         ></DeviceList>
                     )}
                 </div>
                 <div className={s.buttons}>
-                    <button onClick={handleCancelClick}>Cancel</button>
-                    <button onClick={handleOKClick}>OK</button>
+                    <Button className={s.cancelButton} onClick={handleCancelClick}>
+                        {CancelButtonText}
+                    </Button>
+                    <Button className={s.okButton} onClick={handleOkClick}>
+                        {OkButtonText}
+                    </Button>
                 </div>
             </div>
         </div>

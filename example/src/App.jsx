@@ -21,6 +21,12 @@ function App() {
                 isSelectAudioOutput
                 isSelectVideoInput
                 open={modalOpen}
+                audioInputDeviceLabel="音声入力デバイス"
+                audioOutputDeviceLabel="音声出力デバイス"
+                videoInputDeviceLabel="映像入力デバイス"
+                OkButtonText="決定"
+                CancelButtonText="キャンセル"
+                allowOutsideClick={false}
                 onDeviceSelected={handleDeviceSelected}
                 onDeviceSelectCanceled={handleDeviceSelectCanceled}
             ></SelectMediaDevicesModal>

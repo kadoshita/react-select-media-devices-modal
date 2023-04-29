@@ -26,3 +26,9 @@
     align-items: center;
     justify-content: right;
 }
+
+.chancelButton {}
+
+.okButton {
+    margin-left: 4px;
+}
