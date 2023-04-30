@@ -26,8 +26,8 @@ function App() {
                 audioInputDeviceLabel="Audio input device"
                 audioOutputDeviceLabel="Audio output device"
                 videoInputDeviceLabel="Video input device"
-                ConfirmButtonText="Confirm"
-                CancelButtonText="Cancel"
+                confirmButtonText="Confirm"
+                cancelButtonText="Cancel"
                 allowOutsideClick={false}
                 onDeviceSelected={handleDeviceSelected}
                 onDeviceSelectCanceled={handleDeviceSelectCanceled}
