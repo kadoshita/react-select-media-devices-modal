@@ -14,10 +14,12 @@ const DeviceList = ({ devices, label, onChange }: DeviceListProps) => {
         onChange(e.target.value);
     };
 
+    const selectId = `device-select-${label.toLowerCase().replace(/\s/g, '-')}`;
+
     return (
         <>
-            <label htmlFor="device-select">{label}</label>
-            <select name="device-select" onChange={handleChange}>
+            <label htmlFor={selectId}>{label}</label>
+            <select id={selectId} onChange={handleChange}>
                 {devices.map((d, i) => (
                     <DeviceItem value={d.deviceId} name={d.label} key={i}></DeviceItem>
                 ))}
