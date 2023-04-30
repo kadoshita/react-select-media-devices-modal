@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import s from './style.module.css';
-import { useGetDevices } from './hooks/getDevices';
+import { useGetDevices } from './hooks/useGetDevices';
 import DeviceList from './components/deviceList';
 import Button from './components/button';
 
