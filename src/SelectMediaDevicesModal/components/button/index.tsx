@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 interface ButtonProps {
-    className: string;
+    className?: string;
     children: ReactNode;
     onClick: () => void;
 }
