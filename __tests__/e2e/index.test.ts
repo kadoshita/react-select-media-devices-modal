@@ -9,10 +9,10 @@ describe('react-select-media-devices-modal', async () => {
     let page: Page;
 
     beforeAll(async () => {
-        server = await preview({ preview: { port: 3000 }, root: 'example' });
+        server = await preview({ root: 'example' });
         browser = await chromium.launch({
             headless: process.env.CI === 'true',
-            args: ['--use-fake-ui-for-media-stream'],
+            args: ['--use-fake-ui-for-media-stream', '--use-fake-device-for-media-stream'],
         });
         page = await browser.newPage();
     });
@@ -25,7 +25,12 @@ describe('react-select-media-devices-modal', async () => {
     });
 
     test('should open modal and select devices', async () => {
-        await page.goto('http://localhost:3000');
+        server.printUrls();
+
+        await page.goto(server.resolvedUrls.local[0]);
+
+        await page.screenshot({ path: 'open-page.png', fullPage: true });
+
         const selectDeviceButton = page.getByText('Select Device');
         await expect(selectDeviceButton).toBeVisible();
 
@@ -33,10 +38,14 @@ describe('react-select-media-devices-modal', async () => {
 
         await expect(page.getByText('Audio input device')).toBeVisible();
 
-        await new Promise((r) => setTimeout(r, 3000));
+        await page.screenshot({ path: 'open-modal.png', fullPage: true });
 
-        await page.screenshot({ path: 'screenshot.png', fullPage: true });
+        await page.getByText('Confirm').click();
 
-        // const selectMediaDevicesModal = await page.$('[class*=modal');
+        await expect(page.getByText('Fake Default Audio Input')).toBeVisible();
+        await expect(page.getByText('Fake Default Audio Output')).toBeVisible();
+        await expect(page.getByText('fake_device_0')).toBeVisible();
+
+        await page.screenshot({ path: 'completed.png', fullPage: true });
     }, 60_000);
 });
