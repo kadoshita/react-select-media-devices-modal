@@ -4,3 +4,4 @@ dist
 docs-dist
 *.local
 coverage/
+screenshot.png
