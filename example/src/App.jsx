@@ -28,7 +28,7 @@ function App() {
                 videoInputDeviceLabel="Video input device"
                 confirmButtonText="Confirm"
                 cancelButtonText="Cancel"
-                allowOutsideClick={false}
+                allowOutsideClick={true}
                 onDeviceSelected={handleDeviceSelected}
                 onDeviceSelectCanceled={handleDeviceSelectCanceled}
             ></SelectMediaDevicesModal>

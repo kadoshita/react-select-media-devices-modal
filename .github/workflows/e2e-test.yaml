@@ -1,0 +1,30 @@
+name: E2E Test
+
+on:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build
+      - name: build example
+        run: |
+          cd example
+          npm ci
+          npm run build
+          cd ../
+      - run: npm run test:e2e
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: screenshots
+          path: ./*.png
