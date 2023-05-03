@@ -1,4 +1,6 @@
 import React, { ReactNode } from 'react';
+import s from './style.module.css';
+
 interface ButtonProps {
     className?: string;
     children: ReactNode;
@@ -7,7 +9,7 @@ interface ButtonProps {
 
 const Button = ({ className, children, onClick }: ButtonProps) => {
     return (
-        <button onClick={onClick} className={[className].filter(Boolean).join(' ')}>
+        <button onClick={onClick} className={[s.button, className].filter(Boolean).join(' ')}>
             {children}
         </button>
     );

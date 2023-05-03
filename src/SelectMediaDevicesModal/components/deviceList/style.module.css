@@ -1,0 +1,13 @@
+.deviceList {
+    padding-top: 8px;
+}
+
+.select {
+    margin-top: 4px;
+    border-radius: 4px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    width: 100%;
+}
