@@ -1,7 +1,10 @@
 # react-select-media-devices-modal
 
 [![npm version](https://badge.fury.io/js/react-select-media-devices-modal.svg)](https://badge.fury.io/js/react-select-media-devices-modal)
+[![Test](https://github.com/kadoshita/react-select-media-devices-modal/actions/workflows/test.yaml/badge.svg?branch=master)](https://github.com/kadoshita/react-select-media-devices-modal/actions/workflows/test.yaml)
+[![E2E Test](https://github.com/kadoshita/react-select-media-devices-modal/actions/workflows/e2e-test.yaml/badge.svg)](https://github.com/kadoshita/react-select-media-devices-modal/actions/workflows/e2e-test.yaml)
 [![Release](https://github.com/kadoshita/react-select-media-devices-modal/actions/workflows/release.yaml/badge.svg)](https://github.com/kadoshita/react-select-media-devices-modal/actions/workflows/release.yaml)
+[![Deploy to GitHub Pages](https://github.com/kadoshita/react-select-media-devices-modal/actions/workflows/deploy.yaml/badge.svg?branch=master)](https://github.com/kadoshita/react-select-media-devices-modal/actions/workflows/deploy.yaml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A React component library for select media devices.
@@ -22,7 +25,7 @@ npm install --save react-select-media-devices-modal
 
 ## Usage
 
-```tsx
+```jsx
 import { useState } from 'react';
 import { SelectMediaDevicesModal } from 'react-select-media-devices-modal';
 
