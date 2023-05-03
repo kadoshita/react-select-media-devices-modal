@@ -1,0 +1,61 @@
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal {
+    background: white;
+    padding: 16px;
+    border-radius: 8px;
+}
+
+.deviceSelectContainer {
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+@media(max-width: 640px) {
+    .deviceSelectContainer {
+        display: grid;
+        grid-template-columns: 100%;
+    }
+}
+
+.preview {
+    min-width: 270px;
+    min-height: 180px;
+    max-width: 270px;
+    max-height: 180px;
+    margin-right: 4px;
+}
+
+.previewVideo {
+    width: 270px;
+    height: 180px;
+}
+
+.deviceLists {
+    display: grid;
+    min-width: 270px;
+    margin-left: 8px;
+}
+
+.buttons {
+    padding-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}
+
+.chancelButton {}
+
+.confirmButton {
+    margin-left: 4px;
+}
