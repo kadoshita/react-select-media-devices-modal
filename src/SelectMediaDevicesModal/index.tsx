@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import s from './style.module.css';
-import { useGetDevices } from './hooks/useGetDevices';
-import DeviceList from './components/deviceList';
-import Button from './components/button';
+import { useGetDevices } from '../hooks/useGetDevices';
+import DeviceList from '../components/deviceList';
+import Button from '../components/button';
 
 interface SelectMediaDevicesModalProps {
     isSelectAudioInput: boolean;
