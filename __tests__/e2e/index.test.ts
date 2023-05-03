@@ -36,6 +36,10 @@ describe('react-select-media-devices-modal', async () => {
 
         await selectDeviceButton.click();
 
+        await page.waitForFunction(
+            () => window.document.getElementById('device-select-audio-input-device').childNodes.length > 0
+        );
+
         await expect(page.getByText('Audio input device')).toBeVisible();
 
         await page.screenshot({ path: 'open-modal.png', fullPage: true });
