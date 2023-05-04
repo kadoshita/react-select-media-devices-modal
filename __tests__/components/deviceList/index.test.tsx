@@ -1,8 +1,6 @@
 import React from 'react';
-import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import DeviceList from '../../../src/components/deviceList';
-import { vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
 
 describe('deviceList', () => {

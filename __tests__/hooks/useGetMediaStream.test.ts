@@ -1,7 +1,7 @@
-import { Mock, vi } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
 import { useGetMediaStream } from '../../src/hooks/useGetMediaStream';
 import { act } from 'react-dom/test-utils';
+import { Mock } from 'vitest';
 
 describe('useGetMediaStream', () => {
     const fakeAudioInputDeviceInfo: MediaDeviceInfo = {
@@ -31,6 +31,7 @@ describe('useGetMediaStream', () => {
 
     afterEach(() => {
         vi.restoreAllMocks();
+        vi.unstubAllGlobals();
     });
 
     it('should get audio input media stream', async () => {
