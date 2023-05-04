@@ -1,4 +1,3 @@
-import { afterAll, beforeAll, describe, test } from 'vitest';
 import { PreviewServer, preview } from 'vite';
 import { Browser, Page, chromium } from 'playwright';
 import { expect } from '@playwright/test';
@@ -31,7 +30,7 @@ describe('react-select-media-devices-modal', async () => {
 
         await page.screenshot({ path: 'open-page.png', fullPage: true });
 
-        const selectDeviceButton = page.getByText('Select Device');
+        const selectDeviceButton = page.getByText(/^Select Device$/);
         await expect(selectDeviceButton).toBeVisible();
 
         await selectDeviceButton.click();
@@ -51,5 +50,36 @@ describe('react-select-media-devices-modal', async () => {
         await expect(page.getByText('fake_device_0')).toBeVisible();
 
         await page.screenshot({ path: 'completed.png', fullPage: true });
+    }, 60_000);
+
+    test('should open modal and select devices with preview', async () => {
+        server.printUrls();
+
+        await page.goto(server.resolvedUrls.local[0]);
+
+        await page.screenshot({ path: 'open-page-with-preview.png', fullPage: true });
+
+        const selectDeviceButton = page.getByText('Select Device with Preview');
+        await expect(selectDeviceButton).toBeVisible();
+
+        await selectDeviceButton.click();
+
+        await page.waitForFunction(
+            () => window.document.getElementById('device-select-audio-input-device').childNodes.length > 0
+        );
+
+        await expect(page.getByText('Audio input device')).toBeVisible();
+
+        await page.waitForFunction(() => window.document.querySelector<HTMLVideoElement>('video').readyState === 4);
+
+        await page.screenshot({ path: 'open-modal-with-preview.png', fullPage: true });
+
+        await page.getByText('Confirm').click();
+
+        await expect(page.getByText('Fake Default Audio Input')).toBeVisible();
+        await expect(page.getByText('Fake Default Audio Output')).toBeVisible();
+        await expect(page.getByText('fake_device_0')).toBeVisible();
+
+        await page.screenshot({ path: 'completed-with-preview.png', fullPage: true });
     }, 60_000);
 });
