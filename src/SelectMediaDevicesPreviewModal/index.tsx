@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import s from './style.module.css';
 import { useGetDevices } from '../hooks/useGetDevices';
 import DeviceList from '../components/deviceList';
 import Button from '../components/button';
+import { useGetMediaStream } from '../hooks/useGetMediaStream';
 
-interface SelectMediaDevicesModalProps {
+interface SelectMediaDevicesPreviewModalProps {
     isSelectAudioInput: boolean;
     isSelectAudioOutput: boolean;
     isSelectVideoInput: boolean;
@@ -24,7 +25,7 @@ interface SelectMediaDevicesModalProps {
     onDeviceSelectCanceled: () => void;
 }
 
-const SelectMediaDevicesModal = ({
+const SelectMediaDevicesPreviewModal = ({
     isSelectAudioInput = true,
     isSelectAudioOutput = true,
     isSelectVideoInput = true,
@@ -37,21 +38,31 @@ const SelectMediaDevicesModal = ({
     allowOutsideClick = true,
     onDeviceSelected,
     onDeviceSelectCanceled,
-}: SelectMediaDevicesModalProps) => {
+}: SelectMediaDevicesPreviewModalProps) => {
     const [devices, getDevices] = useGetDevices();
     const [audioInputDevice, setAudioInputDevice] = useState<MediaDeviceInfo>();
     const [audioOutputDevice, setAudioOutputDevice] = useState<MediaDeviceInfo>();
     const [videoInputDevice, setVideoInputDevice] = useState<MediaDeviceInfo>();
 
-    const audioInputDevices = devices.filter((d) => d.kind === 'audioinput');
-    const audioOutputDevices = devices.filter((d) => d.kind === 'audiooutput');
-    const videoInputDevices = devices.filter((d) => d.kind === 'videoinput');
+    const [videoStream, getVideoStream] = useGetMediaStream();
+    const videoPreviewRef = useRef<HTMLVideoElement>();
+
+    const audioInputDevices = useMemo(() => devices.filter((d) => d.kind === 'audioinput'), [devices]);
+    const audioOutputDevices = useMemo(() => devices.filter((d) => d.kind === 'audiooutput'), [devices]);
+    const videoInputDevices = useMemo(() => devices.filter((d) => d.kind === 'videoinput'), [devices]);
 
     useEffect(() => {
         if (!open) return;
 
         getDevices();
     }, [open]);
+
+    useEffect(() => {
+        if (videoInputDevices.length < 1) return;
+
+        const [device] = videoInputDevices;
+        getVideoStream(device);
+    }, [videoInputDevices]);
 
     const handleConfirmClick = () => {
         onDeviceSelected({
@@ -74,8 +85,26 @@ const SelectMediaDevicesModal = ({
     };
 
     const handleChangeVideoInputDevice = (deviceId: string) => {
-        setVideoInputDevice(videoInputDevices.find((d) => d.deviceId === deviceId));
+        const device = videoInputDevices.find((d) => d.deviceId === deviceId);
+        setVideoInputDevice(device);
+        getVideoStream(device);
     };
+
+    useEffect(() => {
+        const { current } = videoPreviewRef;
+
+        if (current === undefined) return;
+
+        if (current.srcObject !== null) {
+            if (current.srcObject instanceof MediaStream) {
+                current.srcObject.getTracks().forEach((t) => t.stop());
+                current.pause();
+            }
+        }
+
+        current.srcObject = videoStream;
+        current.play();
+    }, [videoStream]);
 
     const handleOutsideClick = () => {
         onDeviceSelectCanceled();
@@ -91,28 +120,39 @@ const SelectMediaDevicesModal = ({
                       }
                     : {})}
             >
-                <div className={s.deviceLists}>
-                    {isSelectAudioInput && (
-                        <DeviceList
-                            label={audioInputDeviceLabel}
-                            devices={audioInputDevices}
-                            onChange={handleChangeAudioInputDevice}
-                        ></DeviceList>
-                    )}
-                    {isSelectAudioOutput && (
-                        <DeviceList
-                            label={audioOutputDeviceLabel}
-                            devices={audioOutputDevices}
-                            onChange={handleChangeAudioOutputDevice}
-                        ></DeviceList>
-                    )}
-                    {isSelectVideoInput && (
-                        <DeviceList
-                            label={videoInputDeviceLabel}
-                            devices={videoInputDevices}
-                            onChange={handleChangeVideoInputDevice}
-                        ></DeviceList>
-                    )}
+                <div className={s.deviceSelectContainer}>
+                    <div className={s.preview}>
+                        <video
+                            className={s.previewVideo}
+                            ref={videoPreviewRef}
+                            autoPlay
+                            muted
+                            playsInline
+                        ></video>
+                    </div>
+                    <div className={s.deviceLists}>
+                        {isSelectAudioInput && (
+                            <DeviceList
+                                label={audioInputDeviceLabel}
+                                devices={audioInputDevices}
+                                onChange={handleChangeAudioInputDevice}
+                            ></DeviceList>
+                        )}
+                        {isSelectAudioOutput && (
+                            <DeviceList
+                                label={audioOutputDeviceLabel}
+                                devices={audioOutputDevices}
+                                onChange={handleChangeAudioOutputDevice}
+                            ></DeviceList>
+                        )}
+                        {isSelectVideoInput && (
+                            <DeviceList
+                                label={videoInputDeviceLabel}
+                                devices={videoInputDevices}
+                                onChange={handleChangeVideoInputDevice}
+                            ></DeviceList>
+                        )}
+                    </div>
                 </div>
                 <div className={s.buttons}>
                     <Button className={s.cancelButton} onClick={handleCancelClick}>
@@ -129,4 +169,4 @@ const SelectMediaDevicesModal = ({
     );
 };
 
-export default SelectMediaDevicesModal;
+export default SelectMediaDevicesPreviewModal;

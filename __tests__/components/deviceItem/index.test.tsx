@@ -1,7 +1,6 @@
 import React from 'react';
-import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import DeviceItem from '../../../src/SelectMediaDevicesModal/components/deviceItem';
+import DeviceItem from '../../../src/components/deviceItem';
 
 describe('deviceItem', () => {
     it('should render deviceItem', () => {

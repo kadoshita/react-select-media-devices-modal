@@ -1,6 +1,5 @@
-import { vi } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
-import { useGetDevices } from '../../src/SelectMediaDevicesModal/hooks/useGetDevices';
+import { useGetDevices } from '../../src/hooks/useGetDevices';
 import { act } from 'react-dom/test-utils';
 
 describe('useGetDevices', () => {

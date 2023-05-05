@@ -1,12 +1,10 @@
 import React from 'react';
-import '@testing-library/jest-dom';
 import { render, screen, waitFor } from '@testing-library/react';
-import { vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import SelectMediaDevicesModal from '../src/SelectMediaDevicesModal';
-import { useGetDevices } from '../src/SelectMediaDevicesModal/hooks/useGetDevices';
+import { useGetDevices } from '../src/hooks/useGetDevices';
 
-vi.mock('../src/SelectMediaDevicesModal/hooks/useGetDevices');
+vi.mock('../src/hooks/useGetDevices');
 
 describe('SelectMediaDevicesModal', () => {
     const useGetDevicesMock = useGetDevices as jest.Mock<[MediaDeviceInfo[], () => void]>;

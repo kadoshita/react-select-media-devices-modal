@@ -1,9 +1,7 @@
 import React from 'react';
-import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import Button from '../../../src/SelectMediaDevicesModal/components/button';
-import { vi } from 'vitest';
+import Button from '../../../src/components/button';
 
 describe('button', () => {
     it('should render button', () => {

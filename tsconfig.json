@@ -13,6 +13,9 @@
         "./src"
       ]
     },
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "types": [
+      "vitest/globals"
+    ]
   }
 }
