@@ -36,6 +36,7 @@ jobs:
     permissions:
       contents: read
       packages: write
+      id-token: write
 
     steps:
       - name: Checkout repository
@@ -47,9 +48,10 @@ jobs:
           node-version: '18.x'
           cache: 'npm'
           registry-url: 'https://registry.npmjs.org'
+      - run: npm install -g npm
       - run: npm ci
       - run: npm run build
-      - run: npm publish
+      - run: npm publish --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
