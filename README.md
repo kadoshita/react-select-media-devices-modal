@@ -13,6 +13,7 @@ A React component library for select media devices.
 
 - Select audio input, audio output, and video input device.
 - Show preview media stream get from selected device.
+- Record sample audio stream and play.
 
 ## Demo
 
@@ -110,6 +111,49 @@ function App() {
 export default App;
 ```
 
+### SelectMediaDevicesRecordingModal
+
+```jsx
+import { useState } from 'react';
+import { SelectMediaDevicesRecordingModal } from 'react-select-media-devices-modal';
+
+function App() {
+    const [modalOpen, setModalOpen] = useState(false);
+
+    const handleDeviceSelected = (devices) => {
+        setModalOpen(false);
+        console.log(devices);
+    };
+
+    const handleDeviceSelectCanceled = () => {
+        setModalOpen(false);
+    };
+
+    return (
+        <div>
+            <button onClick={() => setModalOpen((current) => !current)}>Select Device</button>
+            <SelectMediaDevicesRecordingModal
+                isSelectAudioInput
+                isSelectAudioOutput
+                isSelectVideoInput
+                open={modalOpen}
+                audioInputDeviceLabel="Audio input device"
+                audioOutputDeviceLabel="Audio output device"
+                videoInputDeviceLabel="Video input device"
+                confirmButtonText="Confirm"
+                cancelButtonText="Cancel"
+                recordingButtonText="Recording"
+                allowOutsideClick={false}
+                onDeviceSelected={handleDeviceSelected}
+                onDeviceSelectCanceled={handleDeviceSelectCanceled}
+            ></SelectMediaDevicesRecordingModal>
+        </div>
+    );
+}
+
+export default App;
+```
+
 ## Props
 
 ### `SelectMediaDevicesModalProps`
@@ -142,6 +186,24 @@ export default App;
 | videoInputDeviceLabel | `string` | `'video input device'` | Label for list of video input devices. |
 | confirmButtonText | `string` | `'Confirm'` | Label for the confirm button. |
 | cancelButtonText | `string` | `'Cancel'` | Label for the cancel button. |
+| allowOutsideClick | `boolean` | `true` | Flag that cancel selection when clicking outside of the modal. |
+| onDeviceSelected | `function` | `(devices: { audioInput?: MediaDeviceInfo; audioOutput?: MediaDeviceInfo; videoInput?: MediaDeviceInfo; }) => void` | Handler function called when devices are selected. |
+| onDeviceSelectCanceled | `function` | `() => void` | Handler function called when selection canceled. |
+
+### `SelectMediaDevicesRecordingModalProps`
+
+| Name | Type | Default | Description |
+| :--- | :--- | :------ | :---------- |
+| isSelectAudioInput | `boolean` | `true` | Flag that select an audio input device or not. |
+| isSelectAudioOutput | `boolean` | `true` | Flag that select an audio output device or not. |
+| isSelectVideoInput | `boolean` | `true` | Flag that select a video input device or not. |
+| open | `boolean` | `false` | Flag that open the modal or not. |
+| audioInputDeviceLabel | `string` | `'audio input device'` | Label for list of audio input devices. |
+| audioOutputDeviceLabel | `string` | `'audio output device'` | Label for list of audio output devices. |
+| videoInputDeviceLabel | `string` | `'video input device'` | Label for list of video input devices. |
+| confirmButtonText | `string` | `'Confirm'` | Label for the confirm button. |
+| cancelButtonText | `string` | `'Cancel'` | Label for the cancel button. |
+| recordingButtonText | `string` | `'Recording'` | Label for the recording button. |
 | allowOutsideClick | `boolean` | `true` | Flag that cancel selection when clicking outside of the modal. |
 | onDeviceSelected | `function` | `(devices: { audioInput?: MediaDeviceInfo; audioOutput?: MediaDeviceInfo; videoInput?: MediaDeviceInfo; }) => void` | Handler function called when devices are selected. |
 | onDeviceSelectCanceled | `function` | `() => void` | Handler function called when selection canceled. |
