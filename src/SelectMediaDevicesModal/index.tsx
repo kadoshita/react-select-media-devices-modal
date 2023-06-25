@@ -5,16 +5,16 @@ import DeviceList from '../components/deviceList';
 import Button from '../components/button';
 
 interface SelectMediaDevicesModalProps {
-    isSelectAudioInput: boolean;
-    isSelectAudioOutput: boolean;
-    isSelectVideoInput: boolean;
+    isSelectAudioInput?: boolean;
+    isSelectAudioOutput?: boolean;
+    isSelectVideoInput?: boolean;
     open: boolean;
-    audioInputDeviceLabel: string;
-    audioOutputDeviceLabel: string;
-    videoInputDeviceLabel: string;
-    confirmButtonText: string;
-    cancelButtonText: string;
-    allowOutsideClick: boolean;
+    audioInputDeviceLabel?: string;
+    audioOutputDeviceLabel?: string;
+    videoInputDeviceLabel?: string;
+    confirmButtonText?: string;
+    cancelButtonText?: string;
+    allowOutsideClick?: boolean;
     onDeviceSelected: (devices: {
         audioInput?: MediaDeviceInfo;
         audioOutput?: MediaDeviceInfo;
