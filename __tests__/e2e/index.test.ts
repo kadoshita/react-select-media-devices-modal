@@ -82,4 +82,47 @@ describe('react-select-media-devices-modal', async () => {
 
         await page.screenshot({ path: 'completed-with-preview.png', fullPage: true });
     }, 60_000);
+
+    test('should open modal and select devices with recording', async () => {
+        server.printUrls();
+
+        await page.goto(server.resolvedUrls.local[0]);
+
+        await page.screenshot({ path: 'open-page-with-recording.png', fullPage: true });
+
+        const selectDeviceButton = page.getByText('Select Device with Recording');
+        await expect(selectDeviceButton).toBeVisible();
+
+        await selectDeviceButton.click();
+
+        await page.waitForFunction(
+            () => window.document.getElementById('device-select-audio-input-device').childNodes.length > 0
+        );
+
+        await expect(page.getByText('Audio input device')).toBeVisible();
+
+        const recordingButton = page.getByText(/^Recording$/);
+        await expect(recordingButton).toBeVisible();
+        await expect(recordingButton).not.toBeDisabled();
+
+        await recordingButton.click();
+
+        await expect(recordingButton).toBeDisabled();
+
+        await page.waitForFunction(() => window.document.querySelector<HTMLAudioElement>('audio').readyState === 4);
+
+        await expect(recordingButton).not.toBeDisabled();
+
+        await page.waitForFunction(() => window.document.querySelector<HTMLAudioElement>('audio').ended);
+
+        await page.screenshot({ path: 'open-modal-with-recording.png', fullPage: true });
+
+        await page.getByText('Confirm').click();
+
+        await expect(page.getByText('Fake Default Audio Input')).toBeVisible();
+        await expect(page.getByText('Fake Default Audio Output')).toBeVisible();
+        await expect(page.getByText('fake_device_0')).toBeVisible();
+
+        await page.screenshot({ path: 'completed-with-recording.png', fullPage: true });
+    }, 60_000);
 });
