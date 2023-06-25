@@ -106,6 +106,48 @@ describe('SelectMediaDevicesPreviewModal', () => {
         expect(screen.getByText('Video input device')).toBeInTheDocument();
     });
 
+    it.each([
+        'isSelectAudioInput',
+        'isSelectAudioOutput',
+        'isSelectVideoInput',
+        'audioInputDeviceLabel',
+        'audioOutputDeviceLabel',
+        'videoInputDeviceLabel',
+        'confirmButtonText',
+        'cancelButtonText',
+        'allowOutsideClick',
+    ])('should render SelectMediaDevicesPreviewModal when %s is undefined', async (key) => {
+        const handleDeviceSelected = vi.fn();
+        const handleDeviceSelectCanceled = vi.fn();
+        const props = {
+            isSelectAudioInput: true,
+            isSelectAudioOutput: true,
+            isSelectVideoInput: true,
+            open: false,
+            audioInputDeviceLabel: 'audio input device',
+            audioOutputDeviceLabel: 'audio output device',
+            videoInputDeviceLabel: 'video input device',
+            confirmButtonText: 'Confirm',
+            cancelButtonText: 'Cancel',
+            allowOutsideClick: false,
+            onDeviceSelected: handleDeviceSelected,
+            onDeviceSelectCanceled: handleDeviceSelectCanceled,
+        };
+        props[key] = undefined;
+        const { rerender } = render(<SelectMediaDevicesPreviewModal {...props}></SelectMediaDevicesPreviewModal>);
+
+        await waitFor(() => expect(screen.queryAllByText('audio input device')).toEqual([]));
+        await waitFor(() => expect(screen.queryAllByText('audio output device')).toEqual([]));
+        await waitFor(() => expect(screen.queryAllByText('video input device')).toEqual([]));
+
+        props.open = true;
+        rerender(<SelectMediaDevicesPreviewModal {...props}></SelectMediaDevicesPreviewModal>);
+
+        expect(screen.getByText('audio input device')).toBeInTheDocument();
+        expect(screen.getByText('audio output device')).toBeInTheDocument();
+        expect(screen.getByText('video input device')).toBeInTheDocument();
+    });
+
     it('should be called onDeviceSelected when confirm button is clicked', async () => {
         const handleDeviceSelected = vi.fn();
         const handleDeviceSelectCanceled = vi.fn();
