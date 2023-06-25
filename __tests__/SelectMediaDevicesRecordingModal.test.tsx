@@ -109,6 +109,51 @@ describe('SelectMediaDevicesRecordingModal', () => {
         expect(screen.getByText('Recording')).toBeInTheDocument();
     });
 
+    it.each([
+        'isSelectAudioInput',
+        'isSelectAudioOutput',
+        'isSelectVideoInput',
+        'audioInputDeviceLabel',
+        'audioOutputDeviceLabel',
+        'videoInputDeviceLabel',
+        'confirmButtonText',
+        'cancelButtonText',
+        'recordingButtonText',
+        'allowOutsideClick',
+    ])('should render SelectMediaDevicesRecordingModal when %s is undefined', async (key) => {
+        const handleDeviceSelected = vi.fn();
+        const handleDeviceSelectCanceled = vi.fn();
+        const props = {
+            isSelectAudioInput: true,
+            isSelectAudioOutput: true,
+            isSelectVideoInput: true,
+            open: false,
+            audioInputDeviceLabel: 'audio input device',
+            audioOutputDeviceLabel: 'audio output device',
+            videoInputDeviceLabel: 'video input device',
+            confirmButtonText: 'Confirm',
+            cancelButtonText: 'Cancel',
+            recordingButtonText: 'Recording',
+            allowOutsideClick: false,
+            onDeviceSelected: handleDeviceSelected,
+            onDeviceSelectCanceled: handleDeviceSelectCanceled,
+        };
+        props[key] = undefined;
+        const { rerender } = render(<SelectMediaDevicesRecordingModal {...props}></SelectMediaDevicesRecordingModal>);
+
+        await waitFor(() => expect(screen.queryAllByText('audio input device')).toEqual([]));
+        await waitFor(() => expect(screen.queryAllByText('audio output device')).toEqual([]));
+        await waitFor(() => expect(screen.queryAllByText('video input device')).toEqual([]));
+
+        props.open = true;
+        rerender(<SelectMediaDevicesRecordingModal {...props}></SelectMediaDevicesRecordingModal>);
+
+        expect(screen.getByText('audio input device')).toBeInTheDocument();
+        expect(screen.getByText('audio output device')).toBeInTheDocument();
+        expect(screen.getByText('video input device')).toBeInTheDocument();
+        expect(screen.getByText('Recording')).toBeInTheDocument();
+    });
+
     it('should be called onDeviceSelected when confirm button is clicked', async () => {
         const handleDeviceSelected = vi.fn();
         const handleDeviceSelectCanceled = vi.fn();

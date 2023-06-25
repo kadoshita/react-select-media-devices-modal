@@ -6,17 +6,17 @@ import Button from '../components/button';
 import { useGetMediaStream } from '../hooks/useGetMediaStream';
 
 interface SelectMediaDevicesRecordingModalProps {
-    isSelectAudioInput: boolean;
-    isSelectAudioOutput: boolean;
-    isSelectVideoInput: boolean;
+    isSelectAudioInput?: boolean;
+    isSelectAudioOutput?: boolean;
+    isSelectVideoInput?: boolean;
     open: boolean;
-    audioInputDeviceLabel: string;
-    audioOutputDeviceLabel: string;
-    videoInputDeviceLabel: string;
-    confirmButtonText: string;
-    cancelButtonText: string;
-    recordingButtonText: string;
-    allowOutsideClick: boolean;
+    audioInputDeviceLabel?: string;
+    audioOutputDeviceLabel?: string;
+    videoInputDeviceLabel?: string;
+    confirmButtonText?: string;
+    cancelButtonText?: string;
+    recordingButtonText?: string;
+    allowOutsideClick?: boolean;
     onDeviceSelected: (devices: {
         audioInput?: MediaDeviceInfo;
         audioOutput?: MediaDeviceInfo;
@@ -185,13 +185,7 @@ const SelectMediaDevicesRecordingModal = ({
                 <div className={s.deviceSelectContainer}>
                     <div className={s.preview}>
                         <video className={s.previewVideo} ref={videoPreviewRef} autoPlay muted playsInline></video>
-                        <audio
-                            className={s.previewAudio}
-                            ref={audioPreviewRef}
-                            autoPlay
-                            playsInline
-                            controls
-                        ></audio>
+                        <audio className={s.previewAudio} ref={audioPreviewRef} autoPlay playsInline controls></audio>
                     </div>
                     <div className={s.deviceLists}>
                         {isSelectAudioInput && (
