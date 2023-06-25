@@ -13,6 +13,7 @@ describe('react-select-media-devices-modal', async () => {
             headless: process.env.CI === 'true',
             args: ['--use-fake-ui-for-media-stream', '--use-fake-device-for-media-stream'],
         });
+        console.info(`${browser.browserType().name()} ${browser.version()}`);
         page = await browser.newPage();
     });
 
