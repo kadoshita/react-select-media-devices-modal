@@ -5,10 +5,11 @@ import s from './style.module.css';
 interface DeviceListProps {
     devices: MediaDeviceInfo[];
     label: string;
+    selectedDevice?: MediaDeviceInfo;
     onChange: (deviceId: string) => void;
 }
 
-const DeviceList = ({ devices, label, onChange }: DeviceListProps) => {
+const DeviceList = ({ devices, label, selectedDevice, onChange }: DeviceListProps) => {
     if (devices === undefined) return <></>;
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -20,7 +21,7 @@ const DeviceList = ({ devices, label, onChange }: DeviceListProps) => {
     return (
         <div className={s.deviceList}>
             <label htmlFor={selectId}>{label}</label>
-            <select className={s.select} id={selectId} onChange={handleChange}>
+            <select className={s.select} id={selectId} onChange={handleChange} defaultValue={selectedDevice?.deviceId}>
                 {devices.map((d, i) => (
                     <DeviceItem value={d.deviceId} name={d.label} key={i}></DeviceItem>
                 ))}

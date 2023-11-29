@@ -129,6 +129,7 @@ const SelectMediaDevicesPreviewModal = ({
                             <DeviceList
                                 label={audioInputDeviceLabel}
                                 devices={audioInputDevices}
+                                selectedDevice={audioInputDevice}
                                 onChange={handleChangeAudioInputDevice}
                             ></DeviceList>
                         )}
@@ -136,6 +137,7 @@ const SelectMediaDevicesPreviewModal = ({
                             <DeviceList
                                 label={audioOutputDeviceLabel}
                                 devices={audioOutputDevices}
+                                selectedDevice={audioOutputDevice}
                                 onChange={handleChangeAudioOutputDevice}
                             ></DeviceList>
                         )}
@@ -143,6 +145,7 @@ const SelectMediaDevicesPreviewModal = ({
                             <DeviceList
                                 label={videoInputDeviceLabel}
                                 devices={videoInputDevices}
+                                selectedDevice={videoInputDevice}
                                 onChange={handleChangeVideoInputDevice}
                             ></DeviceList>
                         )}

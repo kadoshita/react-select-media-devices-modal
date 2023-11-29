@@ -193,6 +193,7 @@ const SelectMediaDevicesRecordingModal = ({
                                 <DeviceList
                                     label={audioInputDeviceLabel}
                                     devices={audioInputDevices}
+                                    selectedDevice={audioInputDevice}
                                     onChange={handleChangeAudioInputDevice}
                                 ></DeviceList>
                                 <div className={s.buttons}>
@@ -210,6 +211,7 @@ const SelectMediaDevicesRecordingModal = ({
                             <DeviceList
                                 label={audioOutputDeviceLabel}
                                 devices={audioOutputDevices}
+                                selectedDevice={audioOutputDevice}
                                 onChange={handleChangeAudioOutputDevice}
                             ></DeviceList>
                         )}
@@ -217,6 +219,7 @@ const SelectMediaDevicesRecordingModal = ({
                             <DeviceList
                                 label={videoInputDeviceLabel}
                                 devices={videoInputDevices}
+                                selectedDevice={videoInputDevice}
                                 onChange={handleChangeVideoInputDevice}
                             ></DeviceList>
                         )}
