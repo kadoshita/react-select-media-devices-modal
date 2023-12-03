@@ -36,6 +36,13 @@ describe('SelectMediaDevicesModal', () => {
         useGetDevicesMock.mockImplementation(() => {
             return [fakeDevices, vi.fn()];
         });
+
+        vi.stubGlobal('navigator', {
+            mediaDevices: {
+                addEventListener: vi.fn(),
+                removeEventListener: vi.fn(),
+            },
+        });
     });
 
     afterEach(() => {

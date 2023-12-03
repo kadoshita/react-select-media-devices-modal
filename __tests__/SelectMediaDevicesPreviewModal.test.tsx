@@ -42,6 +42,12 @@ describe('SelectMediaDevicesPreviewModal', () => {
 
         // vitestのglobalsオプションをtrueにすると、window.MediaStreamがundefinedになるため、globalでMediaStreamのstubを登録している
         vi.stubGlobal('MediaStream', class MediaStream {});
+        vi.stubGlobal('navigator', {
+            mediaDevices: {
+                addEventListener: vi.fn(),
+                removeEventListener: vi.fn(),
+            },
+        });
 
         useGetDevicesMock.mockImplementation(() => {
             return [fakeDevices, vi.fn()];
