@@ -60,7 +60,7 @@ const SelectMediaDevicesPreviewModal = ({
     useEffect(() => {
         if (videoInputDevices.length < 1) return;
 
-        const [device] = videoInputDevices;
+        const device = videoInputDevices.find((d) => d.deviceId === videoInputDevice?.deviceId) ?? videoInputDevices[0];
         getVideoStream(device);
     }, [videoInputDevices]);
 
