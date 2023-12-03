@@ -215,3 +215,7 @@ export default App;
 ## Author
 
 [Yoshiki Kadoshita](https://github.com/kadoshita)
+
+## Contributors
+
+- [kounoike](https://github.com/kounoike)
