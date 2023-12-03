@@ -52,9 +52,12 @@ const SelectMediaDevicesPreviewModal = ({
     const videoInputDevices = useMemo(() => devices.filter((d) => d.kind === 'videoinput'), [devices]);
 
     useEffect(() => {
-        if (!open) return;
-
-        getDevices();
+        if (open) {
+            navigator.mediaDevices.addEventListener('devicechange', getDevices);
+            getDevices();
+        } else {
+            navigator.mediaDevices.removeEventListener('devicechange', getDevices);
+        }
     }, [open]);
 
     useEffect(() => {

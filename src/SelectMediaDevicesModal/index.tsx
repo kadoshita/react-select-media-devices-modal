@@ -48,9 +48,12 @@ const SelectMediaDevicesModal = ({
     const videoInputDevices = devices.filter((d) => d.kind === 'videoinput');
 
     useEffect(() => {
-        if (!open) return;
-
-        getDevices();
+        if (open) {
+            navigator.mediaDevices.addEventListener('devicechange', getDevices);
+            getDevices();
+        } else {
+            navigator.mediaDevices.removeEventListener('devicechange', getDevices);
+        }
     }, [open]);
 
     const handleConfirmClick = () => {
