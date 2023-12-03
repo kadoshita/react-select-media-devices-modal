@@ -4,6 +4,7 @@ import {
     SelectMediaDevicesModal,
     SelectMediaDevicesRecordingModal,
 } from 'react-select-media-devices-modal';
+import Webcam from 'react-webcam'
 
 function App() {
     const [modalOpen, setModalOpen] = useState(false);
@@ -37,6 +38,11 @@ function App() {
             </div>
 
             <pre>{JSON.stringify(devices, null, 2)}</pre>
+            <Webcam
+                videoConstraints={{
+                    deviceId: devices?.videoInput?.deviceId === 'default' ? undefined : {exact: devices?.videoInput?.deviceId},
+                }}
+            />
             <SelectMediaDevicesModal
                 isSelectAudioInput
                 isSelectAudioOutput
