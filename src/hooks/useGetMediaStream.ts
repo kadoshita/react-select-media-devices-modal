@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export const useGetMediaStream = (): [MediaStream, (device: MediaDeviceInfo) => void] => {
+export const useGetMediaStream = (): [MediaStream, (device: MediaDeviceInfo) => void, () => void] => {
     const [mediaStream, setMediaStream] = useState<MediaStream>();
 
     useEffect(() => {
@@ -23,5 +23,11 @@ export const useGetMediaStream = (): [MediaStream, (device: MediaDeviceInfo) => 
         })();
     };
 
-    return [mediaStream, getMediaStream];
+    const stopMediaStream = () => {
+        if (mediaStream === undefined) return;
+        mediaStream.getTracks().forEach((t) => t.stop());
+        setMediaStream(undefined);
+    };
+
+    return [mediaStream, getMediaStream, stopMediaStream];
 };

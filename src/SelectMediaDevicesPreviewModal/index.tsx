@@ -44,7 +44,7 @@ const SelectMediaDevicesPreviewModal = ({
     const [audioOutputDevice, setAudioOutputDevice] = useState<MediaDeviceInfo>();
     const [videoInputDevice, setVideoInputDevice] = useState<MediaDeviceInfo>();
 
-    const [videoStream, getVideoStream] = useGetMediaStream();
+    const [videoStream, getVideoStream, stopVideoStream] = useGetMediaStream();
     const videoPreviewRef = useRef<HTMLVideoElement>();
 
     const audioInputDevices = useMemo(() => devices.filter((d) => d.kind === 'audioinput'), [devices]);
@@ -68,6 +68,7 @@ const SelectMediaDevicesPreviewModal = ({
     }, [videoInputDevices]);
 
     const handleConfirmClick = () => {
+        stopVideoStream();
         onDeviceSelected({
             audioInput: audioInputDevice !== undefined ? audioInputDevice : audioInputDevices[0],
             audioOutput: audioOutputDevice !== undefined ? audioOutputDevice : audioOutputDevices[0],
@@ -76,6 +77,7 @@ const SelectMediaDevicesPreviewModal = ({
     };
 
     const handleCancelClick = () => {
+        stopVideoStream();
         onDeviceSelectCanceled();
     };
 
@@ -96,7 +98,7 @@ const SelectMediaDevicesPreviewModal = ({
     useEffect(() => {
         const { current } = videoPreviewRef;
 
-        if (current === undefined) return;
+        if (!current) return;
 
         if (current.srcObject !== null) {
             if (current.srcObject instanceof MediaStream) {
@@ -110,6 +112,7 @@ const SelectMediaDevicesPreviewModal = ({
     }, [videoStream]);
 
     const handleOutsideClick = () => {
+        stopVideoStream();
         onDeviceSelectCanceled();
     };
 
