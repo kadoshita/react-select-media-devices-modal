@@ -46,7 +46,7 @@ const SelectMediaDevicesRecordingModal = ({
     const [audioOutputDevice, setAudioOutputDevice] = useState<MediaDeviceInfo>();
     const [videoInputDevice, setVideoInputDevice] = useState<MediaDeviceInfo>();
 
-    const [videoStream, getVideoStream] = useGetMediaStream();
+    const [videoStream, getVideoStream, stopVideoStream] = useGetMediaStream();
     const videoPreviewRef = useRef<HTMLVideoElement>();
     const audioPreviewRef = useRef<
         HTMLAudioElement & {
@@ -87,6 +87,7 @@ const SelectMediaDevicesRecordingModal = ({
         }
         audioPreviewRef.current.src = '';
         audioPreviewRef.current.pause();
+        stopVideoStream();
     };
 
     const handleConfirmClick = () => {

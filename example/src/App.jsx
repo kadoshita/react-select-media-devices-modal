@@ -4,7 +4,7 @@ import {
     SelectMediaDevicesModal,
     SelectMediaDevicesRecordingModal,
 } from 'react-select-media-devices-modal';
-import Webcam from 'react-webcam'
+import Webcam from 'react-webcam';
 
 function App() {
     const [modalOpen, setModalOpen] = useState(false);

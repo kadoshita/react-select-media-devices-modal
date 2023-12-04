@@ -12,7 +12,9 @@ vi.mock('../src/hooks/useGetMediaStream');
 describe('SelectMediaDevicesPreviewModal', () => {
     let videoElementPlayMock: SpyInstance<any[], Promise<void>>;
     const useGetDevicesMock = useGetDevices as jest.Mock<[MediaDeviceInfo[], () => void]>;
-    const useGetMediaStreamMock = useGetMediaStream as jest.Mock<[MediaStream, (device: MediaDeviceInfo) => void]>;
+    const useGetMediaStreamMock = useGetMediaStream as jest.Mock<
+        [MediaStream, (device: MediaDeviceInfo) => void, () => void]
+    >;
     const fakeDevices: MediaDeviceInfo[] = [
         {
             deviceId: 'fake device1 id',
@@ -54,7 +56,7 @@ describe('SelectMediaDevicesPreviewModal', () => {
         });
 
         useGetMediaStreamMock.mockImplementation(() => {
-            return [new MediaStream(), vi.fn()];
+            return [new MediaStream(), vi.fn(), vi.fn()];
         });
     });
 
