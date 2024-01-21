@@ -1,7 +1,7 @@
 {
     "name": "react-select-media-devices-modal",
     "description": "A React component library for select media devices",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "license": "MIT",
     "repository": {
         "type": "git",
