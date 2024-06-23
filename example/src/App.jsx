@@ -40,7 +40,10 @@ function App() {
             <pre>{JSON.stringify(devices, null, 2)}</pre>
             <Webcam
                 videoConstraints={{
-                    deviceId: devices?.videoInput?.deviceId === 'default' ? undefined : {exact: devices?.videoInput?.deviceId},
+                    deviceId:
+                        devices?.videoInput?.deviceId === 'default'
+                            ? undefined
+                            : { exact: devices?.videoInput?.deviceId },
                 }}
             />
             <SelectMediaDevicesModal
@@ -48,11 +51,11 @@ function App() {
                 isSelectAudioOutput
                 isSelectVideoInput
                 open={modalOpen}
-                audioInputDeviceLabel="Audio input device"
-                audioOutputDeviceLabel="Audio output device"
-                videoInputDeviceLabel="Video input device"
-                confirmButtonText="Confirm"
-                cancelButtonText="Cancel"
+                audioInputDeviceLabel='Audio input device'
+                audioOutputDeviceLabel='Audio output device'
+                videoInputDeviceLabel='Video input device'
+                confirmButtonText='Confirm'
+                cancelButtonText='Cancel'
                 allowOutsideClick={true}
                 onDeviceSelected={handleDeviceSelected}
                 onDeviceSelectCanceled={handleDeviceSelectCanceled}
@@ -62,11 +65,11 @@ function App() {
                 isSelectAudioOutput
                 isSelectVideoInput
                 open={modalWithPreviewOpen}
-                audioInputDeviceLabel="Audio input device"
-                audioOutputDeviceLabel="Audio output device"
-                videoInputDeviceLabel="Video input device"
-                confirmButtonText="Confirm"
-                cancelButtonText="Cancel"
+                audioInputDeviceLabel='Audio input device'
+                audioOutputDeviceLabel='Audio output device'
+                videoInputDeviceLabel='Video input device'
+                confirmButtonText='Confirm'
+                cancelButtonText='Cancel'
                 allowOutsideClick={true}
                 onDeviceSelected={handleDeviceSelected}
                 onDeviceSelectCanceled={handleDeviceSelectCanceled}
@@ -76,12 +79,12 @@ function App() {
                 isSelectAudioOutput
                 isSelectVideoInput
                 open={modalWithRecordingOpen}
-                audioInputDeviceLabel="Audio input device"
-                audioOutputDeviceLabel="Audio output device"
-                videoInputDeviceLabel="Video input device"
-                confirmButtonText="Confirm"
-                cancelButtonText="Cancel"
-                recordingButtonText="Recording"
+                audioInputDeviceLabel='Audio input device'
+                audioOutputDeviceLabel='Audio output device'
+                videoInputDeviceLabel='Video input device'
+                confirmButtonText='Confirm'
+                cancelButtonText='Cancel'
+                recordingButtonText='Recording'
                 allowOutsideClick={true}
                 onDeviceSelected={handleDeviceSelected}
                 onDeviceSelectCanceled={handleDeviceSelectCanceled}

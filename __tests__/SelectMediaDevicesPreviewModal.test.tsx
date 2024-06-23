@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { useGetDevices } from '../src/hooks/useGetDevices';
 import { SelectMediaDevicesPreviewModal } from '../src';
 import { useGetMediaStream } from '../src/hooks/useGetMediaStream';
-import { SpyInstance } from 'vitest';
+import { SpyInstance, vi } from 'vitest';
 
 vi.mock('../src/hooks/useGetDevices');
 vi.mock('../src/hooks/useGetMediaStream');
@@ -41,22 +41,41 @@ describe('SelectMediaDevicesPreviewModal', () => {
 
     beforeEach(() => {
         videoElementPlayMock = vi.spyOn(window.HTMLVideoElement.prototype, 'play').mockResolvedValue();
-
-        // vitestのglobalsオプションをtrueにすると、window.MediaStreamがundefinedになるため、globalでMediaStreamのstubを登録している
-        vi.stubGlobal('MediaStream', class MediaStream {});
+        vi.stubGlobal(
+            'MediaStream',
+            class MediaStream {
+                getTracks() {}
+            }
+        );
         vi.stubGlobal('navigator', {
             mediaDevices: {
                 addEventListener: vi.fn(),
                 removeEventListener: vi.fn(),
             },
         });
-
+        // ref: https://github.com/vitest-dev/vitest/issues/821#issuecomment-1046954558
+        Object.defineProperty(window, 'matchMedia', {
+            writable: true,
+            value: vi.fn().mockImplementation((query) => ({
+                matches: false,
+                media: query,
+                onchange: null,
+                addEventListener: vi.fn(),
+                removeEventListener: vi.fn(),
+                dispatchEvent: vi.fn(),
+            })),
+        });
         useGetDevicesMock.mockImplementation(() => {
             return [fakeDevices, vi.fn()];
         });
-
         useGetMediaStreamMock.mockImplementation(() => {
-            return [new MediaStream(), vi.fn(), vi.fn()];
+            return [
+                {
+                    getTracks: () => {},
+                } as unknown as MediaStream,
+                vi.fn(),
+                vi.fn(),
+            ];
         });
     });
 
@@ -77,11 +96,11 @@ describe('SelectMediaDevicesPreviewModal', () => {
                 isSelectAudioOutput
                 isSelectVideoInput
                 open={false}
-                audioInputDeviceLabel="Audio input device"
-                audioOutputDeviceLabel="Audio output device"
-                videoInputDeviceLabel="Video input device"
-                confirmButtonText="Confirm"
-                cancelButtonText="Cancel"
+                audioInputDeviceLabel='Audio input device'
+                audioOutputDeviceLabel='Audio output device'
+                videoInputDeviceLabel='Video input device'
+                confirmButtonText='Confirm'
+                cancelButtonText='Cancel'
                 allowOutsideClick={false}
                 onDeviceSelected={handleDeviceSelected}
                 onDeviceSelectCanceled={handleDeviceSelectCanceled}
@@ -98,11 +117,11 @@ describe('SelectMediaDevicesPreviewModal', () => {
                 isSelectAudioOutput
                 isSelectVideoInput
                 open={true}
-                audioInputDeviceLabel="Audio input device"
-                audioOutputDeviceLabel="Audio output device"
-                videoInputDeviceLabel="Video input device"
-                confirmButtonText="Confirm"
-                cancelButtonText="Cancel"
+                audioInputDeviceLabel='Audio input device'
+                audioOutputDeviceLabel='Audio output device'
+                videoInputDeviceLabel='Video input device'
+                confirmButtonText='Confirm'
+                cancelButtonText='Cancel'
                 allowOutsideClick={false}
                 onDeviceSelected={handleDeviceSelected}
                 onDeviceSelectCanceled={handleDeviceSelectCanceled}
@@ -124,6 +143,7 @@ describe('SelectMediaDevicesPreviewModal', () => {
         'confirmButtonText',
         'cancelButtonText',
         'allowOutsideClick',
+        'style',
     ])('should render SelectMediaDevicesPreviewModal when %s is undefined', async (key) => {
         const handleDeviceSelected = vi.fn();
         const handleDeviceSelectCanceled = vi.fn();
@@ -140,6 +160,7 @@ describe('SelectMediaDevicesPreviewModal', () => {
             allowOutsideClick: false,
             onDeviceSelected: handleDeviceSelected,
             onDeviceSelectCanceled: handleDeviceSelectCanceled,
+            style: {},
         };
         props[key] = undefined;
         const { rerender } = render(<SelectMediaDevicesPreviewModal {...props}></SelectMediaDevicesPreviewModal>);
@@ -165,11 +186,11 @@ describe('SelectMediaDevicesPreviewModal', () => {
                 isSelectAudioOutput
                 isSelectVideoInput
                 open={true}
-                audioInputDeviceLabel="Audio input device"
-                audioOutputDeviceLabel="Audio output device"
-                videoInputDeviceLabel="Video input device"
-                confirmButtonText="Confirm"
-                cancelButtonText="Cancel"
+                audioInputDeviceLabel='Audio input device'
+                audioOutputDeviceLabel='Audio output device'
+                videoInputDeviceLabel='Video input device'
+                confirmButtonText='Confirm'
+                cancelButtonText='Cancel'
                 allowOutsideClick={true}
                 onDeviceSelected={handleDeviceSelected}
                 onDeviceSelectCanceled={handleDeviceSelectCanceled}
@@ -216,11 +237,11 @@ describe('SelectMediaDevicesPreviewModal', () => {
                 isSelectAudioOutput
                 isSelectVideoInput
                 open={true}
-                audioInputDeviceLabel="Audio input device"
-                audioOutputDeviceLabel="Audio output device"
-                videoInputDeviceLabel="Video input device"
-                confirmButtonText="Confirm"
-                cancelButtonText="Cancel"
+                audioInputDeviceLabel='Audio input device'
+                audioOutputDeviceLabel='Audio output device'
+                videoInputDeviceLabel='Video input device'
+                confirmButtonText='Confirm'
+                cancelButtonText='Cancel'
                 allowOutsideClick={true}
                 onDeviceSelected={handleDeviceSelected}
                 onDeviceSelectCanceled={handleDeviceSelectCanceled}
@@ -231,7 +252,7 @@ describe('SelectMediaDevicesPreviewModal', () => {
         expect(screen.getByText('Audio output device')).toBeInTheDocument();
         expect(screen.getByText('Video input device')).toBeInTheDocument();
 
-        await userEvent.click(container.querySelector('[class*=background]'));
+        await userEvent.click(container.querySelector('div'));
 
         expect(handleDeviceSelectCanceled).toBeCalledTimes(1);
     });
@@ -245,11 +266,11 @@ describe('SelectMediaDevicesPreviewModal', () => {
                 isSelectAudioOutput
                 isSelectVideoInput
                 open={true}
-                audioInputDeviceLabel="Audio input device"
-                audioOutputDeviceLabel="Audio output device"
-                videoInputDeviceLabel="Video input device"
-                confirmButtonText="Confirm"
-                cancelButtonText="Cancel"
+                audioInputDeviceLabel='Audio input device'
+                audioOutputDeviceLabel='Audio output device'
+                videoInputDeviceLabel='Video input device'
+                confirmButtonText='Confirm'
+                cancelButtonText='Cancel'
                 allowOutsideClick={true}
                 onDeviceSelected={handleDeviceSelected}
                 onDeviceSelectCanceled={handleDeviceSelectCanceled}

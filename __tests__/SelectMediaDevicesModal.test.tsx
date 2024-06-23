@@ -1,13 +1,20 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import SelectMediaDevicesModal from '../src/SelectMediaDevicesModal';
 import { useGetDevices } from '../src/hooks/useGetDevices';
+import { SelectMediaDevicesModal } from '../src';
+import { useGetMediaStream } from '../src/hooks/useGetMediaStream';
+import { SpyInstance, vi } from 'vitest';
 
 vi.mock('../src/hooks/useGetDevices');
+vi.mock('../src/hooks/useGetMediaStream');
 
 describe('SelectMediaDevicesModal', () => {
+    let videoElementPlayMock: SpyInstance<any[], Promise<void>>;
     const useGetDevicesMock = useGetDevices as jest.Mock<[MediaDeviceInfo[], () => void]>;
+    const useGetMediaStreamMock = useGetMediaStream as jest.Mock<
+        [MediaStream, (device: MediaDeviceInfo) => void, () => void]
+    >;
     const fakeDevices: MediaDeviceInfo[] = [
         {
             deviceId: 'fake device1 id',
@@ -33,20 +40,51 @@ describe('SelectMediaDevicesModal', () => {
     ];
 
     beforeEach(() => {
-        useGetDevicesMock.mockImplementation(() => {
-            return [fakeDevices, vi.fn()];
-        });
-
+        videoElementPlayMock = vi.spyOn(window.HTMLVideoElement.prototype, 'play').mockResolvedValue();
+        vi.stubGlobal(
+            'MediaStream',
+            class MediaStream {
+                getTracks() {}
+            }
+        );
         vi.stubGlobal('navigator', {
             mediaDevices: {
                 addEventListener: vi.fn(),
                 removeEventListener: vi.fn(),
             },
         });
+        // ref: https://github.com/vitest-dev/vitest/issues/821#issuecomment-1046954558
+        Object.defineProperty(window, 'matchMedia', {
+            writable: true,
+            value: vi.fn().mockImplementation((query) => ({
+                matches: false,
+                media: query,
+                onchange: null,
+                addEventListener: vi.fn(),
+                removeEventListener: vi.fn(),
+                dispatchEvent: vi.fn(),
+            })),
+        });
+        useGetDevicesMock.mockImplementation(() => {
+            return [fakeDevices, vi.fn()];
+        });
+        useGetMediaStreamMock.mockImplementation(() => {
+            return [
+                {
+                    getTracks: () => {},
+                } as unknown as MediaStream,
+                vi.fn(),
+                vi.fn(),
+            ];
+        });
     });
 
     afterEach(() => {
+        videoElementPlayMock.mockRestore();
+        useGetDevicesMock.mockRestore();
+        useGetMediaStreamMock.mockRestore();
         vi.restoreAllMocks();
+        vi.unstubAllGlobals();
     });
 
     it('should render SelectMediaDevicesModal', async () => {
@@ -58,11 +96,11 @@ describe('SelectMediaDevicesModal', () => {
                 isSelectAudioOutput
                 isSelectVideoInput
                 open={false}
-                audioInputDeviceLabel="Audio input device"
-                audioOutputDeviceLabel="Audio output device"
-                videoInputDeviceLabel="Video input device"
-                confirmButtonText="Confirm"
-                cancelButtonText="Cancel"
+                audioInputDeviceLabel='Audio input device'
+                audioOutputDeviceLabel='Audio output device'
+                videoInputDeviceLabel='Video input device'
+                confirmButtonText='Confirm'
+                cancelButtonText='Cancel'
                 allowOutsideClick={false}
                 onDeviceSelected={handleDeviceSelected}
                 onDeviceSelectCanceled={handleDeviceSelectCanceled}
@@ -79,11 +117,11 @@ describe('SelectMediaDevicesModal', () => {
                 isSelectAudioOutput
                 isSelectVideoInput
                 open={true}
-                audioInputDeviceLabel="Audio input device"
-                audioOutputDeviceLabel="Audio output device"
-                videoInputDeviceLabel="Video input device"
-                confirmButtonText="Confirm"
-                cancelButtonText="Cancel"
+                audioInputDeviceLabel='Audio input device'
+                audioOutputDeviceLabel='Audio output device'
+                videoInputDeviceLabel='Video input device'
+                confirmButtonText='Confirm'
+                cancelButtonText='Cancel'
                 allowOutsideClick={false}
                 onDeviceSelected={handleDeviceSelected}
                 onDeviceSelectCanceled={handleDeviceSelectCanceled}
@@ -105,6 +143,7 @@ describe('SelectMediaDevicesModal', () => {
         'confirmButtonText',
         'cancelButtonText',
         'allowOutsideClick',
+        'style',
     ])('should render SelectMediaDevicesModal when %s is undefined', async (key) => {
         const handleDeviceSelected = vi.fn();
         const handleDeviceSelectCanceled = vi.fn();
@@ -121,6 +160,7 @@ describe('SelectMediaDevicesModal', () => {
             allowOutsideClick: false,
             onDeviceSelected: handleDeviceSelected,
             onDeviceSelectCanceled: handleDeviceSelectCanceled,
+            style: {},
         };
         props[key] = undefined;
         const { rerender } = render(<SelectMediaDevicesModal {...props}></SelectMediaDevicesModal>);
@@ -146,11 +186,11 @@ describe('SelectMediaDevicesModal', () => {
                 isSelectAudioOutput
                 isSelectVideoInput
                 open={true}
-                audioInputDeviceLabel="Audio input device"
-                audioOutputDeviceLabel="Audio output device"
-                videoInputDeviceLabel="Video input device"
-                confirmButtonText="Confirm"
-                cancelButtonText="Cancel"
+                audioInputDeviceLabel='Audio input device'
+                audioOutputDeviceLabel='Audio output device'
+                videoInputDeviceLabel='Video input device'
+                confirmButtonText='Confirm'
+                cancelButtonText='Cancel'
                 allowOutsideClick={true}
                 onDeviceSelected={handleDeviceSelected}
                 onDeviceSelectCanceled={handleDeviceSelectCanceled}
@@ -197,11 +237,11 @@ describe('SelectMediaDevicesModal', () => {
                 isSelectAudioOutput
                 isSelectVideoInput
                 open={true}
-                audioInputDeviceLabel="Audio input device"
-                audioOutputDeviceLabel="Audio output device"
-                videoInputDeviceLabel="Video input device"
-                confirmButtonText="Confirm"
-                cancelButtonText="Cancel"
+                audioInputDeviceLabel='Audio input device'
+                audioOutputDeviceLabel='Audio output device'
+                videoInputDeviceLabel='Video input device'
+                confirmButtonText='Confirm'
+                cancelButtonText='Cancel'
                 allowOutsideClick={true}
                 onDeviceSelected={handleDeviceSelected}
                 onDeviceSelectCanceled={handleDeviceSelectCanceled}
@@ -212,7 +252,7 @@ describe('SelectMediaDevicesModal', () => {
         expect(screen.getByText('Audio output device')).toBeInTheDocument();
         expect(screen.getByText('Video input device')).toBeInTheDocument();
 
-        await userEvent.click(container.querySelector('[class*=background]'));
+        await userEvent.click(container.querySelector('div'));
 
         expect(handleDeviceSelectCanceled).toBeCalledTimes(1);
     });
@@ -226,11 +266,11 @@ describe('SelectMediaDevicesModal', () => {
                 isSelectAudioOutput
                 isSelectVideoInput
                 open={true}
-                audioInputDeviceLabel="Audio input device"
-                audioOutputDeviceLabel="Audio output device"
-                videoInputDeviceLabel="Video input device"
-                confirmButtonText="Confirm"
-                cancelButtonText="Cancel"
+                audioInputDeviceLabel='Audio input device'
+                audioOutputDeviceLabel='Audio output device'
+                videoInputDeviceLabel='Video input device'
+                confirmButtonText='Confirm'
+                cancelButtonText='Cancel'
                 allowOutsideClick={true}
                 onDeviceSelected={handleDeviceSelected}
                 onDeviceSelectCanceled={handleDeviceSelectCanceled}

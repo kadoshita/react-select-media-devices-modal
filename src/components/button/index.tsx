@@ -1,16 +1,26 @@
 import React, { ReactNode } from 'react';
-import s from './style.module.css';
 
 interface ButtonProps {
     className?: string;
     children: ReactNode;
     disabled?: boolean;
+    style?: React.CSSProperties;
     onClick: () => void;
 }
 
-const Button = ({ className, children, disabled, onClick }: ButtonProps) => {
+const Button = ({ children, disabled, style: styleProps, onClick }: ButtonProps) => {
+    const defaultStyle = {
+        borderRadius: '4px',
+        height: '32px',
+        paddingLeft: '16px',
+        paddingRight: '16px',
+        backgroundColor: 'white',
+        borderWidth: '1px',
+    };
+    const style: ButtonProps['style'] = styleProps ? { ...defaultStyle, ...styleProps } : defaultStyle;
+
     return (
-        <button onClick={onClick} disabled={disabled} className={[s.button, className].filter(Boolean).join(' ')}>
+        <button onClick={onClick} disabled={disabled} style={style}>
             {children}
         </button>
     );
