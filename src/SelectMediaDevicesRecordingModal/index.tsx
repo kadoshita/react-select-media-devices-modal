@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import s from './style.module.css';
 import { useGetDevices } from '../hooks/useGetDevices';
 import DeviceList from '../components/deviceList';
 import Button from '../components/button';
@@ -17,6 +16,23 @@ interface SelectMediaDevicesRecordingModalProps {
     cancelButtonText?: string;
     recordingButtonText?: string;
     allowOutsideClick?: boolean;
+    style?: {
+        background?: React.CSSProperties;
+        modal?: React.CSSProperties;
+        deviceSelectContainer?: React.CSSProperties;
+        preview?: React.CSSProperties;
+        previewVideo?: React.CSSProperties;
+        previewAudio?: React.CSSProperties;
+        deviceLists?: React.CSSProperties;
+        recordingButtons?: React.CSSProperties;
+        recordingButton?: React.CSSProperties;
+        audioInputDeviceList?: Parameters<typeof DeviceList>[0]['style'];
+        audioOutputDeviceList?: Parameters<typeof DeviceList>[0]['style'];
+        videoInputDeviceList?: Parameters<typeof DeviceList>[0]['style'];
+        buttons?: React.CSSProperties;
+        cancelButton?: React.CSSProperties;
+        confirmButton?: React.CSSProperties;
+    };
     onDeviceSelected: (devices: {
         audioInput?: MediaDeviceInfo;
         audioOutput?: MediaDeviceInfo;
@@ -38,6 +54,7 @@ const SelectMediaDevicesRecordingModal = ({
     cancelButtonText = 'Cancel',
     recordingButtonText = 'Recording',
     allowOutsideClick = true,
+    style: styleProps,
     onDeviceSelected,
     onDeviceSelectCanceled,
 }: SelectMediaDevicesRecordingModalProps) => {
@@ -59,6 +76,176 @@ const SelectMediaDevicesRecordingModal = ({
     const audioInputDevices = useMemo(() => devices.filter((d) => d.kind === 'audioinput'), [devices]);
     const audioOutputDevices = useMemo(() => devices.filter((d) => d.kind === 'audiooutput'), [devices]);
     const videoInputDevices = useMemo(() => devices.filter((d) => d.kind === 'videoinput'), [devices]);
+
+    const mediaQuery = matchMedia('(max-width: 640px)');
+
+    const defaultStyle: Required<SelectMediaDevicesRecordingModalProps['style']> = {
+        background: {
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.3)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+        modal: {
+            background: 'white',
+            padding: '16px',
+            borderRadius: '8px',
+        },
+        deviceSelectContainer: mediaQuery.matches
+            ? {
+                  display: 'grid',
+                  gridTemplateColumns: '100%',
+              }
+            : {
+                  display: 'grid',
+                  gridTemplateColumns: '50% 50%',
+              },
+        preview: {
+            minWidth: '270px',
+            minHeight: '180px',
+            maxWidth: '270px',
+            marginRight: '4px',
+        },
+        previewVideo: {
+            width: '270px',
+            height: '180px',
+        },
+        previewAudio: {
+            width: '270px',
+        },
+        deviceLists: {
+            display: 'grid',
+            minWidth: '270px',
+            marginLeft: '8px',
+        },
+        recordingButtons: {},
+        recordingButton: {},
+        audioInputDeviceList: {},
+        audioOutputDeviceList: {},
+        videoInputDeviceList: {},
+        buttons: {
+            paddingTop: '16px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'right',
+        },
+        cancelButton: {},
+        confirmButton: {
+            marginLeft: '4px',
+        },
+    };
+
+    const [style, setStyle] = useState<Required<SelectMediaDevicesRecordingModalProps['style']>>({
+        background: styleProps ? { ...defaultStyle.background, ...styleProps.background } : defaultStyle.background,
+        modal: styleProps ? { ...defaultStyle.modal, ...styleProps.modal } : defaultStyle.modal,
+        deviceSelectContainer: styleProps
+            ? { ...defaultStyle.deviceSelectContainer, ...styleProps.deviceSelectContainer }
+            : defaultStyle.deviceSelectContainer,
+        preview: styleProps ? { ...defaultStyle.preview, ...styleProps.preview } : defaultStyle.preview,
+        previewVideo: styleProps
+            ? { ...defaultStyle.previewVideo, ...styleProps.previewVideo }
+            : defaultStyle.previewVideo,
+        previewAudio: styleProps
+            ? { ...defaultStyle.previewAudio, ...styleProps.previewAudio }
+            : defaultStyle.previewAudio,
+        deviceLists: styleProps ? { ...defaultStyle.deviceLists, ...styleProps.deviceLists } : defaultStyle.deviceLists,
+        recordingButtons: styleProps
+            ? { ...defaultStyle.recordingButtons, ...styleProps.recordingButtons }
+            : defaultStyle.recordingButtons,
+        recordingButton: styleProps
+            ? { ...defaultStyle.recordingButton, ...styleProps.recordingButton }
+            : defaultStyle.recordingButton,
+        audioInputDeviceList: styleProps
+            ? { ...defaultStyle.audioInputDeviceList, ...styleProps.audioInputDeviceList }
+            : defaultStyle.audioInputDeviceList,
+        audioOutputDeviceList: styleProps
+            ? { ...defaultStyle.audioOutputDeviceList, ...styleProps.audioOutputDeviceList }
+            : defaultStyle.audioOutputDeviceList,
+        videoInputDeviceList: styleProps
+            ? { ...defaultStyle.videoInputDeviceList, ...styleProps.videoInputDeviceList }
+            : defaultStyle.videoInputDeviceList,
+        buttons: styleProps ? { ...defaultStyle.buttons, ...styleProps.buttons } : defaultStyle.buttons,
+        cancelButton: styleProps
+            ? { ...defaultStyle.cancelButton, ...styleProps.cancelButton }
+            : defaultStyle.cancelButton,
+        confirmButton: styleProps
+            ? { ...defaultStyle.confirmButton, ...styleProps.confirmButton }
+            : defaultStyle.confirmButton,
+    });
+
+    useEffect(() => {
+        setStyle({
+            background: styleProps ? { ...defaultStyle.background, ...styleProps.background } : defaultStyle.background,
+            modal: styleProps ? { ...defaultStyle.modal, ...styleProps.modal } : defaultStyle.modal,
+            deviceSelectContainer: styleProps
+                ? { ...defaultStyle.deviceSelectContainer, ...styleProps.deviceSelectContainer }
+                : defaultStyle.deviceSelectContainer,
+            preview: styleProps ? { ...defaultStyle.preview, ...styleProps.preview } : defaultStyle.preview,
+            previewVideo: styleProps
+                ? { ...defaultStyle.previewVideo, ...styleProps.previewVideo }
+                : defaultStyle.previewVideo,
+            previewAudio: styleProps
+                ? { ...defaultStyle.previewAudio, ...styleProps.previewAudio }
+                : defaultStyle.previewAudio,
+            deviceLists: styleProps
+                ? { ...defaultStyle.deviceLists, ...styleProps.deviceLists }
+                : defaultStyle.deviceLists,
+            recordingButtons: styleProps
+                ? { ...defaultStyle.recordingButtons, ...styleProps.recordingButtons }
+                : defaultStyle.recordingButtons,
+            recordingButton: styleProps
+                ? { ...defaultStyle.recordingButton, ...styleProps.recordingButton }
+                : defaultStyle.recordingButton,
+            audioInputDeviceList: styleProps
+                ? { ...defaultStyle.audioInputDeviceList, ...styleProps.audioInputDeviceList }
+                : defaultStyle.audioInputDeviceList,
+            audioOutputDeviceList: styleProps
+                ? { ...defaultStyle.audioOutputDeviceList, ...styleProps.audioOutputDeviceList }
+                : defaultStyle.audioOutputDeviceList,
+            videoInputDeviceList: styleProps
+                ? { ...defaultStyle.videoInputDeviceList, ...styleProps.videoInputDeviceList }
+                : defaultStyle.videoInputDeviceList,
+            buttons: styleProps ? { ...defaultStyle.buttons, ...styleProps.buttons } : defaultStyle.buttons,
+            cancelButton: styleProps
+                ? { ...defaultStyle.cancelButton, ...styleProps.cancelButton }
+                : defaultStyle.cancelButton,
+            confirmButton: styleProps
+                ? { ...defaultStyle.confirmButton, ...styleProps.confirmButton }
+                : defaultStyle.confirmButton,
+        });
+    }, [styleProps]);
+
+    useEffect(() => {
+        const handleChange = () => {
+            if (mediaQuery.matches) {
+                setStyle({
+                    ...style,
+                    deviceSelectContainer: {
+                        display: 'grid',
+                        gridTemplateColumns: '100%',
+                    },
+                });
+            } else {
+                setStyle({
+                    ...style,
+                    deviceSelectContainer: {
+                        display: 'grid',
+                        gridTemplateColumns: '50% 50%',
+                    },
+                });
+            }
+        };
+        mediaQuery.addEventListener('change', handleChange);
+
+        return () => {
+            mediaQuery.removeEventListener('change', handleChange);
+        };
+    }, []);
 
     useEffect(() => {
         if (open) {
@@ -177,32 +364,33 @@ const SelectMediaDevicesRecordingModal = ({
     };
 
     return open ? (
-        <div className={s.background} {...(allowOutsideClick ? { onClick: handleOutsideClick } : {})}>
+        <div style={style.background} {...(allowOutsideClick ? { onClick: handleOutsideClick } : {})}>
             <div
-                className={s.modal}
+                style={style.modal}
                 {...(allowOutsideClick
                     ? {
                           onClick: (e: React.MouseEvent<HTMLInputElement>) => e.stopPropagation(),
                       }
                     : {})}
             >
-                <div className={s.deviceSelectContainer}>
-                    <div className={s.preview}>
-                        <video className={s.previewVideo} ref={videoPreviewRef} autoPlay muted playsInline></video>
-                        <audio className={s.previewAudio} ref={audioPreviewRef} autoPlay playsInline controls></audio>
+                <div style={style.deviceSelectContainer}>
+                    <div style={style.preview}>
+                        <video style={style.previewVideo} ref={videoPreviewRef} autoPlay muted playsInline></video>
+                        <audio style={style.previewAudio} ref={audioPreviewRef} autoPlay playsInline controls></audio>
                     </div>
-                    <div className={s.deviceLists}>
+                    <div style={style.deviceLists}>
                         {isSelectAudioInput && (
                             <>
                                 <DeviceList
+                                    style={style.audioInputDeviceList}
                                     label={audioInputDeviceLabel}
                                     devices={audioInputDevices}
                                     selectedDevice={audioInputDevice}
                                     onChange={handleChangeAudioInputDevice}
                                 ></DeviceList>
-                                <div className={s.buttons}>
+                                <div style={style.recordingButtons}>
                                     <Button
-                                        className={s.recordingButton}
+                                        style={style.recordingButton}
                                         onClick={handleRecordingClick}
                                         disabled={isRecordingButtonDisabled}
                                     >
@@ -213,6 +401,7 @@ const SelectMediaDevicesRecordingModal = ({
                         )}
                         {isSelectAudioOutput && (
                             <DeviceList
+                                style={style?.audioOutputDeviceList}
                                 label={audioOutputDeviceLabel}
                                 devices={audioOutputDevices}
                                 selectedDevice={audioOutputDevice}
@@ -221,6 +410,7 @@ const SelectMediaDevicesRecordingModal = ({
                         )}
                         {isSelectVideoInput && (
                             <DeviceList
+                                style={style?.videoInputDeviceList}
                                 label={videoInputDeviceLabel}
                                 devices={videoInputDevices}
                                 selectedDevice={videoInputDevice}
@@ -229,11 +419,11 @@ const SelectMediaDevicesRecordingModal = ({
                         )}
                     </div>
                 </div>
-                <div className={s.buttons}>
-                    <Button className={s.cancelButton} onClick={handleCancelClick}>
+                <div style={style.buttons}>
+                    <Button style={style.cancelButton} onClick={handleCancelClick}>
                         {cancelButtonText}
                     </Button>
-                    <Button className={s.confirmButton} onClick={handleConfirmClick}>
+                    <Button style={style.confirmButton} onClick={handleConfirmClick}>
                         {confirmButtonText}
                     </Button>
                 </div>
