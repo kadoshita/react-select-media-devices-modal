@@ -1,0 +1,26 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    assignees:
+      - kadoshita
+    groups:
+      production-major:
+        dependency-type: 'production'
+        update-types:
+          - major
+      production:
+        dependency-type: 'production'
+        update-types:
+          - minor
+          - patch
+      development:
+        dependency-type: 'development'
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    assignees:
+      - kadoshita
