@@ -42,6 +42,8 @@ jobs:
 
   deploy:
     uses: ./.github/workflows/deploy.yaml
+    permissions:
+      contents: write
     needs:
       - test
       - e2e_test
