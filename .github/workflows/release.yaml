@@ -1,38 +1,50 @@
 name: Release
+run-name: ${{ github.event.pull_request.title }}
 
 on:
-  push:
-    tags:
-      - "v*"
+  pull_request:
+    types:
+      - closed
 
 jobs:
-  verup:
+  create_release:
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
     steps:
-    - name: Get version
-      id: get_version
-      run: echo "version=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
-    - uses: actions/checkout@v4
-      with:
-        ref: master
-        fetch-depth: 0
-    - name: Update package version
-      run: |
-        npm version from-git --no-git-tag-version
-    - name: Commit and push
-      run: |
-        git config user.name 'github-actions[bot]'
-        git config user.email 'github-actions[bot]@users.noreply.github.com'
-        git add .
-        git commit -m "Update version to ${{ steps.get_version.outputs.version }}"
-        git push -u origin master
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Get package version
+        id: get_package_version
+        run: |
+          VERSION=$(jq -r -c '.version' ./package.json)
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          name: Release v${{ steps.get_package_version.outputs.VERSION }}
+          tag_name: v${{ steps.get_package_version.outputs.VERSION }}
+
+  test:
+    uses: ./.github/workflows/test.yaml
+    secrets: inherit
+    needs:
+      - create_release
+
+  e2e_test:
+    uses: ./.github/workflows/e2e-test.yaml
+    secrets: inherit
+    needs:
+      - create_release
 
   build-and-release-package:
     runs-on: ubuntu-latest
     needs:
-      - verup
+      - test
+      - e2e_test
     permissions:
       contents: read
       packages: write
@@ -54,15 +66,3 @@ jobs:
       - run: npm publish --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-  release:
-    runs-on: ubuntu-latest
-    needs:
-      - verup
-    permissions:
-      contents: write
-    steps:
-    - name: Release
-      uses: softprops/action-gh-release@v2
-      with:
-        generate_release_notes: true
