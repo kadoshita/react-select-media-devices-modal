@@ -1,0 +1,48 @@
+name: Prepare Release
+run-name: Prepare ${{ github.event.inputs.release_type }} Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Type of release'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - pajor
+          - minor
+          - patch
+
+jobs:
+  prepare_release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update Package Version
+        run: npm version --no-git-tag-version ${{ github.event.inputs.release_type }}
+
+      - name: Get package version
+        id: get_package_version
+        run: |
+          VERSION=$(jq -r -c '.version' ./package.json)
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GH_TOKEN_FOR_PR }}
+          branch: release/$${{ steps.get_package_version.outputs.VERSION }}
+
+          base: ${{ github.ref_name }}
+          delete-branch: true
+          title: 'Release v$${{ steps.get_package_version.outputs.VERSION }}'
+          body: 'This pull request is for releasing version ${{ steps.get_package_version.outputs.VERSION }}'
+          committer: github-actions[bot] <github-actions[bot]@users.noreply.github.com>
+          author: github-actions[bot] <github-actions[bot]@users.noreply.github.com>
+          commit-message: 'Update version to ${{ steps.get_package_version.outputs.VERSION }}'
