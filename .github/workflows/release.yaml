@@ -42,7 +42,6 @@ jobs:
 
   deploy:
     uses: ./.github/workflows/deploy.yaml
-    secrets: inherit
     needs:
       - test
       - e2e_test
