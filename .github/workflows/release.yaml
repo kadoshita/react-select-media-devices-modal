@@ -40,11 +40,17 @@ jobs:
     needs:
       - create_release
 
-  build-and-release-package:
-    runs-on: ubuntu-latest
+  deploy:
+    uses: ./.github/workflows/deploy.yaml
+    secrets: inherit
     needs:
       - test
       - e2e_test
+
+  build-and-release-package:
+    runs-on: ubuntu-latest
+    needs:
+      - deploy
     permissions:
       contents: read
       packages: write
