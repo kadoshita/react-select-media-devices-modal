@@ -25,6 +25,7 @@ jobs:
           npm ci
           npm run build
           cd ../
+      - run: npx playwright install
       - run: npm run test:e2e
       - uses: actions/upload-artifact@v4
         if: always()
