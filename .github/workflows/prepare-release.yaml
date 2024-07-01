@@ -40,7 +40,7 @@ jobs:
           branch: release/${{ steps.get_package_version.outputs.VERSION }}
           base: ${{ github.ref_name }}
           delete-branch: true
-          title: 'Release v$${{ steps.get_package_version.outputs.VERSION }}'
+          title: 'Release v${{ steps.get_package_version.outputs.VERSION }}'
           body: 'This pull request is for releasing version ${{ steps.get_package_version.outputs.VERSION }}'
           committer: github-actions[bot] <github-actions[bot]@users.noreply.github.com>
           author: github-actions[bot] <github-actions[bot]@users.noreply.github.com>
