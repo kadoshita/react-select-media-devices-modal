@@ -37,8 +37,7 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GH_TOKEN_FOR_PR }}
-          branch: release/$${{ steps.get_package_version.outputs.VERSION }}
-
+          branch: release/${{ steps.get_package_version.outputs.VERSION }}
           base: ${{ github.ref_name }}
           delete-branch: true
           title: 'Release v$${{ steps.get_package_version.outputs.VERSION }}'
