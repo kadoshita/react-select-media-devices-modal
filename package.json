@@ -52,7 +52,7 @@
         "@testing-library/jest-dom": "^6.4.6",
         "@testing-library/react": "^16.0.0",
         "@testing-library/user-event": "^14.4.3",
-        "@types/node": "^20.3.1",
+        "@types/node": "^22.0.0",
         "@types/react": "^18.2.14",
         "@vitejs/plugin-react": "^4.0.1",
         "@vitest/coverage-v8": "^2.0.0",
