@@ -46,7 +46,6 @@
         "react-router-dom": "^7.0.1"
     },
     "devDependencies": {
-        "@mdx-js/react": "^3.0.1",
         "@playwright/test": "^1.35.1",
         "@rollup/plugin-typescript": "^12.1.0",
         "@testing-library/jest-dom": "^6.4.6",
@@ -60,8 +59,6 @@
         "jsdom": "^25.0.0",
         "playwright": "^1.35.1",
         "vite": "^6.0.2",
-        "vite-pages-theme-doc": "^5.0.0",
-        "vite-plugin-react-pages": "^5.0.0",
         "vitest": "^2.0.0"
     }
 }
