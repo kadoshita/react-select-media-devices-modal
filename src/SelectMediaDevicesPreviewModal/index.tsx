@@ -59,7 +59,7 @@ const SelectMediaDevicesPreviewModal = ({
     const [videoInputDevice, setVideoInputDevice] = useState<MediaDeviceInfo>();
 
     const [videoStream, getVideoStream, stopVideoStream] = useGetMediaStream();
-    const videoPreviewRef = useRef<HTMLVideoElement>();
+    const videoPreviewRef = useRef<HTMLVideoElement>(null);
 
     const audioInputDevices = useMemo(() => devices.filter((d) => d.kind === 'audioinput'), [devices]);
     const audioOutputDevices = useMemo(() => devices.filter((d) => d.kind === 'audiooutput'), [devices]);

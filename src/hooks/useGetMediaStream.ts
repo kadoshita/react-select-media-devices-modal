@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export const useGetMediaStream = (): [MediaStream, (device: MediaDeviceInfo) => void, () => void] => {
+export const useGetMediaStream = (): [MediaStream | undefined, (device: MediaDeviceInfo) => void, () => void] => {
     const [mediaStream, setMediaStream] = useState<MediaStream>();
 
     useEffect(() => {
