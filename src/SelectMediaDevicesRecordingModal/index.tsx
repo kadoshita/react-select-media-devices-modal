@@ -64,12 +64,12 @@ const SelectMediaDevicesRecordingModal = ({
     const [videoInputDevice, setVideoInputDevice] = useState<MediaDeviceInfo>();
 
     const [videoStream, getVideoStream, stopVideoStream] = useGetMediaStream();
-    const videoPreviewRef = useRef<HTMLVideoElement>();
+    const videoPreviewRef = useRef<HTMLVideoElement>(null);
     const audioPreviewRef = useRef<
         HTMLAudioElement & {
             setSinkId(deviceId: string): Promise<void>;
         }
-    >();
+    >(null);
     const [recorder, setRecorder] = useState<MediaRecorder>();
     const [isRecordingButtonDisabled, setIsRecordingButtonDisabled] = useState(false);
 
