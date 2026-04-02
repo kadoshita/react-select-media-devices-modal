@@ -53,12 +53,12 @@
         "@testing-library/user-event": "^14.4.3",
         "@types/node": "^24.1.0",
         "@types/react": "^19.0.1",
-        "@vitejs/plugin-react": "^5.0.2",
+        "@vitejs/plugin-react": "^6.0.1",
         "@vitest/coverage-v8": "^4.0.6",
         "@vitest/ui": "^4.0.6",
-        "jsdom": "^28.0.0",
+        "jsdom": "^29.0.1",
         "playwright": "^1.35.1",
-        "vite": "^7.0.6",
+        "vite": "^8.0.3",
         "vitest": "^4.0.6"
     },
     "peerDependencies": {
