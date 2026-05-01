@@ -22,7 +22,7 @@ jobs:
           VERSION=$(jq -r -c '.version' ./package.json)
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
       - name: Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           generate_release_notes: true
           name: Release v${{ steps.get_package_version.outputs.VERSION }}
