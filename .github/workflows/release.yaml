@@ -35,6 +35,9 @@ jobs:
 
   e2e_test:
     uses: ./.github/workflows/e2e-test.yaml
+    permissions:
+      contents: read
+      actions: write
     needs:
       - create_release
 
