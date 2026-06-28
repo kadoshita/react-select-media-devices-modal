@@ -10,5 +10,6 @@ export default defineConfig({
         alias: {
             'react-select-media-devices-modal': path.join(__dirname, '../src'),
         },
+        dedupe: ['react', 'react-dom'],
     },
 });
