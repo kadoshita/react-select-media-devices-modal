@@ -10,7 +10,7 @@ on:
         default: 'patch'
         type: choice
         options:
-          - pajor
+          - major
           - minor
           - patch
 

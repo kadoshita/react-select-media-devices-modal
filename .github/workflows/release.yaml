@@ -30,13 +30,11 @@ jobs:
 
   test:
     uses: ./.github/workflows/test.yaml
-    secrets: inherit
     needs:
       - create_release
 
   e2e_test:
     uses: ./.github/workflows/e2e-test.yaml
-    secrets: inherit
     needs:
       - create_release
 

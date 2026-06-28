@@ -1,7 +1,7 @@
 name: E2E Test
 
 on:
-  pull_request_target:
+  pull_request:
   workflow_call:
   schedule:
     - cron: '0 0 1,15 * *'
@@ -9,6 +9,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
 
     steps:
       - name: Checkout repository
