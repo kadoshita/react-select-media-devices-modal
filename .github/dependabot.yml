@@ -4,23 +4,29 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
-    reviewers:
-      - kadoshita
     groups:
-      production-major:
-        dependency-type: 'production'
-        update-types:
-          - major
-      production:
-        dependency-type: 'production'
-        update-types:
-          - minor
-          - patch
-      development:
-        dependency-type: 'development'
+      npm-dependencies:
+        patterns:
+          - '*'
+    ignore:
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
+  - package-ecosystem: "npm"
+    directory: "/example"
+    schedule:
+      interval: "monthly"
+    groups:
+      npm-dependencies:
+        patterns:
+          - '*'
+    ignore:
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "monthly"
-    reviewers:
-      - kadoshita
+    groups:
+      github-actions:
+        patterns:
+          - '*'
